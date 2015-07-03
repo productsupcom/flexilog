@@ -1,0 +1,13 @@
+{
+    "require": {
+        "psr/log": "^1.0",
+        "graylog2/gelf-php": "^1.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.7",
+        "raulfraile/ladybug": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {"Productsup\\": "lib/Productsup"}
+    }
+}

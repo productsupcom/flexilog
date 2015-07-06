@@ -2,7 +2,7 @@
 
 namespace Productsup;
 
-class LoggerTest extends \Psr\Log\Test\LoggerInterfaceTest
+class LoggerSpecTest extends \Psr\Log\Test\LoggerInterfaceTest
 {
     private $handler = null;
 

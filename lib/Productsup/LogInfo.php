@@ -4,7 +4,7 @@ namespace Productsup;
 
 class LogInfo
 {
-    public $siteId = null;
-    public $pid = null;
-    public $loggerName = null;
+    public $site = null;
+    public $process = null;
+    public $facility = null;
 }

@@ -27,17 +27,12 @@ abstract class AbstractHandler implements HandlerInterface
         foreach ($context as $contextKey => $contextObject) {
             if (is_a($contextObject, 'Exception')) {
                 $context[$contextKey] = $contextObject->__toString();
-            }
-            if (is_array($contextObject)) {
+            } else if (is_array($contextObject)) {
                 $context[$contextKey] = json_encode($contextObject, true);
-            }
-            if (is_a($contextObject, 'DateTime')) {
-                //$context[$contextKey] = $contextObject->getTimestamp();
-                //$context[$contextKey] = json_encode(array(
-                //    'format' => 'RFC3339',
-                //    'date' => $contextObject->format(\DateTime::RFC3339)
-                //), true);
+            } else if (is_a($contextObject, 'DateTime')) {
                 $context[$contextKey] = $contextObject->format(\DateTime::RFC3339);
+            } else if (is_object($contextObject)) {
+                $context[$contextKey] = $contextObject->__toString();
             }
 
             // some reserved keywords

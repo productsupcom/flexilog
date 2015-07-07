@@ -8,8 +8,12 @@ class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
 
     function getLogger()
     {
+        $logInfo = new LogInfo();
+        $logInfo->site = 397;
+        $logInfo->process = 'somepid';
+
         $logger = new Logger('foo', array('Test' =>
-            $handler = new Handler\GelfHandler(new LogInfo())
+            $handler = new Handler\GelfHandler($logInfo)
         ));
         $this->handler = $handler;
         return $logger;

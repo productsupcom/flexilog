@@ -7,9 +7,7 @@ use League;
 class ShellHandler extends AbstractHandler
 {
     protected $logInfo = null;
-    private $climate = null;
-    private $transport = null;
-    private $publisher = null;
+    private $CLImate = null;
     public $verbose = 0;
     public $minLevel = 0;
 
@@ -20,8 +18,8 @@ class ShellHandler extends AbstractHandler
     {
         $this->logInfo = $logInfo;
         $this->verbose = $verbose;
-        $this->climate = new League\CLImate\CLImate;
-        $this->climate->output->defaultTo('error');
+        $this->CLImate = new League\CLImate\CLImate;
+        $this->CLImate->output->defaultTo('error');
         if (isset($this->logLevels[$minimalLevel])) {
             $this->minLevel = $this->logLevels[$minimalLevel];
         }
@@ -32,8 +30,6 @@ class ShellHandler extends AbstractHandler
         if ($this->logLevels[$level] >= $this->minLevel) {
             list($message, $splitFullMessage, $context) = $this->prepare($level, $message, $context);
             $this->logs[] = sprintf('%s %s', $level, $message);
-
-            //return;
 
             $i = 1;
             foreach ($splitFullMessage as $fullMessage) {
@@ -54,27 +50,27 @@ class ShellHandler extends AbstractHandler
                 }
 
                 if ($this->logLevels[$level] >= 5) {
-                    $this->climate->bold()->blink()->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
+                    $this->CLImate->bold()->blink()->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
                 } else {
-                    $this->climate->bold()->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
+                    $this->CLImate->bold()->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
                 }
-                $this->climate->out($shortMessageToSend);
+                $this->CLImate->out($shortMessageToSend);
 
                 if ($this->verbose >= 1) {
                     $color = 'cyan';
                     if (!empty($fullMessage)) {
-                        $this->climate->inline(sprintf('<%s>%s</%s>: ', $color, 'Full Message', $color));
-                        $this->climate->out($fullMessage);
+                        $this->CLImate->inline(sprintf('<%s>%s</%s>: ', $color, 'Full Message', $color));
+                        $this->CLImate->out($fullMessage);
                     }
                     if ($this->verbose >= 2) {
-                        $this->climate->out(sprintf('<%s>%s</%s>: ', $color, 'Extra Variables', $color));
+                        $this->CLImate->out(sprintf('<%s>%s</%s>: ', $color, 'Extra Variables', $color));
                         foreach ($context as $contextKey => $contextObject) {
-                            $this->climate->tab()->inline(sprintf('<%s>%s</%s>: ', $color, $contextKey, $color));
-                            $this->climate->out($contextObject);
+                            $this->CLImate->tab()->inline(sprintf('<%s>%s</%s>: ', $color, $contextKey, $color));
+                            $this->CLImate->out($contextObject);
                         }
                     }
                     if (!empty($fullMessage) || $this->verbose >= 2) {
-                        $this->climate->br();
+                        $this->CLImate->br();
                     }
                 }
 

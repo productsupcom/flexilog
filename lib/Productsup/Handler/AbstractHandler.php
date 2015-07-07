@@ -5,6 +5,16 @@ namespace Productsup\Handler;
 abstract class AbstractHandler implements HandlerInterface
 {
     protected $logInfo = null;
+    protected $logLevels = array(
+        'emergency' => 7,
+        'alert' => 6,
+        'critical' => 5,
+        'error' => 4,
+        'warning' => 3,
+        'notice' => 2,
+        'info' => 1,
+        'debug' => 0
+    );
 
     public function setLogInfo(\Productsup\LogInfo $logInfo)
     {
@@ -40,7 +50,10 @@ abstract class AbstractHandler implements HandlerInterface
                 $context[$contextKey] = $contextObject->format(\DateTime::RFC3339);
             } else if (is_object($contextObject)) {
                 $context[$contextKey] = $contextObject->__toString();
+            } else if (is_resource($contextObject)) {
+                $context[$contextKey] = get_resource_type($contextObject);
             }
+
 
             // some reserved keywords
             $reserved = array('date');

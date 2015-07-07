@@ -31,7 +31,7 @@ class LoggerShellTest extends \Psr\Log\Test\LoggerInterfaceTest
         $context = array(
             'fullMessage' => 'Blablablabla bla blaaaa blaaaa {foo} blaa',
             'foo' => 'bar',
-            //'exception' => new \Exception('wut', 0, new \Exception('Previous')),
+            'exception' => new \Exception('wut', 0, new \Exception('Previous')),
             'someArray' => array('yo, sup', 'nm nm', 'a' => array('foo', 'bar' => 'baz')),
             'date' => new \DateTime()
         );

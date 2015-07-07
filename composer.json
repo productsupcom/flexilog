@@ -1,4 +1,8 @@
 {
+    "name": "productsupcom/logger",
+    "type": "library",
+    "description": "PSR-3 Compatible Logger",
+    "license": "proprietary",
     "require": {
         "psr/log": "^1.0",
         "graylog2/gelf-php": "^1.3",

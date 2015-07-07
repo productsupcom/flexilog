@@ -1,6 +1,6 @@
 # Logger
 
-```
+```php
 $logInfo = new LogInfo();
 $logInfo->site = 397;
 $logInfo->process = 'somepid';
@@ -13,7 +13,7 @@ $logger = new Logger('foo',
 );
 ```
 
-```
+```php
 $context = array(
     'fullMessage' => 'Blablablabla bla blaaaa blaaaa {foo} blaa',
     'foo' => 'bar',
@@ -27,6 +27,6 @@ $logger->message('critical message', $context, 'critical');
 
 or PSR-3 compatible:
 
-```
+```php
 $logger->critical('critical message', $context);
 ```

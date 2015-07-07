@@ -20,18 +20,11 @@ class GelfHandler extends AbstractHandler
         $this->publisher = new Gelf\Publisher();
     }
 
-    public function setLogInfo(\Productsup\LogInfo $logInfo)
-    {
-        $this->logInfo = $logInfo;
-    }
-
     public function write($level, $message, array $context = array())
     {
         list($message, $splitFullMessage, $context) = $this->prepare($level, $message, $context);
         ladybug_dump($level, $message, $splitFullMessage, $context);
         $this->logs[] = sprintf('%s %s', $level, $message);
-
-        //return;
 
         $i = 1;
         foreach ($splitFullMessage as $fullMessage) {
@@ -46,8 +39,6 @@ class GelfHandler extends AbstractHandler
 
             $gelfMessage->setShortMessage($shortMessageToSend)
                         ->setLevel($level);
-                        //->setAdditional('process', getenv('PRODUCTSUP_PID'))
-                        //->setAdditional('site', $siteId);
 
             if (!is_null($fullMessage)) {
                 $gelfMessage->setFullMessage($fullMessage);
@@ -63,7 +54,6 @@ class GelfHandler extends AbstractHandler
                 }
             }
 
-            ladybug_dump($gelfMessage);
             $this->publisher->publish($gelfMessage);
             $i++;
         }

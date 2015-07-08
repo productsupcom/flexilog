@@ -28,11 +28,6 @@ class Logger extends \Psr\Log\AbstractLogger
         return $this;
     }
 
-    public function getName()
-    {
-        return $this->logInfo->loggerName;
-    }
-
     public function setSiteId($siteId)
     {
         $this->logInfo->siteId = $siteId;

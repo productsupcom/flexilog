@@ -61,3 +61,5 @@ or PSR-3 compatible:
 ```php
 $logger->critical('critical message', $context);
 ```
+
+Check the [generated API docs](API.md) for more info.

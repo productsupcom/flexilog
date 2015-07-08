@@ -85,7 +85,7 @@ class Logger extends \Psr\Log\AbstractLogger
     {
         if (!isset($level)) {
             $level = \Psr\Log\LogLevel::NOTICE;
-        } else if (!defined('\Psr\Log\LogLevel::'.strtoupper($level))) {
+        } elseif (!defined('\Psr\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
 

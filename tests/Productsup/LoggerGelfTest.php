@@ -13,7 +13,7 @@ class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
         $logInfo->process = 'somepid';
 
         $logger = new Logger('foo', array('Test' =>
-            $handler = new Handler\GelfHandler($logInfo)
+            $handler = new Handler\GelfHandler($logInfo, 'debug')
         ));
         $this->handler = $handler;
         return $logger;

@@ -6,23 +6,16 @@ use League;
 
 class ShellHandler extends AbstractHandler
 {
-    protected $logInfo = null;
     private $CLImate = null;
-    public $verbose = 0;
-    public $minLevel = 0;
 
     // needed to test for PSR-3 compatibility
     public $logs = null;
 
-    public function __construct(\Productsup\LogInfo $logInfo, $minimalLevel = 0, $verbose = 0)
+    public function __construct(\Productsup\LogInfo $logInfo, $minimalLevel = 'debug', $verbose = 0)
     {
-        $this->logInfo = $logInfo;
-        $this->verbose = $verbose;
+        parent::__construct($logInfo, $minimalLevel, $verbose);
         $this->CLImate = new League\CLImate\CLImate;
         $this->CLImate->output->defaultTo('error');
-        if (isset($this->logLevels[$minimalLevel])) {
-            $this->minLevel = $this->logLevels[$minimalLevel];
-        }
     }
 
     public function write($level, $message, array $context = array())
@@ -41,11 +34,11 @@ class ShellHandler extends AbstractHandler
 
                 if ($this->logLevels[$level] <= 2) {
                     $color = 'green';
-                } else if ($this->logLevels[$level] == 3) {
+                } elseif ($this->logLevels[$level] == 3) {
                     $color = 'yellow';
-                } else if ($this->logLevels[$level] == 4) {
+                } elseif ($this->logLevels[$level] == 4) {
                     $color = 'light_red';
-                } else if ($this->logLevels[$level] >= 5) {
+                } elseif ($this->logLevels[$level] >= 5) {
                     $color = 'red';
                 }
 

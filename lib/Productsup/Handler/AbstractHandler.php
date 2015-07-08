@@ -5,6 +5,8 @@ namespace Productsup\Handler;
 abstract class AbstractHandler implements HandlerInterface
 {
     protected $logInfo = null;
+    public $verbose = 0;
+    public $minLevel = 0;
     protected $logLevels = array(
         'emergency' => 7,
         'alert' => 6,
@@ -15,6 +17,15 @@ abstract class AbstractHandler implements HandlerInterface
         'info' => 1,
         'debug' => 0
     );
+
+    public function __construct(\Productsup\LogInfo $logInfo, $minimalLevel = 'debug', $verbose = 0)
+    {
+        $this->logInfo = $logInfo;
+        $this->verbose = $verbose;
+        if (isset($this->logLevels[$minimalLevel])) {
+            $this->minLevel = $this->logLevels[$minimalLevel];
+        }
+    }
 
     public function setLogInfo(\Productsup\LogInfo $logInfo)
     {
@@ -42,15 +53,15 @@ abstract class AbstractHandler implements HandlerInterface
     {
         // cleanup any thrown exceptions
         foreach ($context as $contextKey => $contextObject) {
-            if (is_a($contextObject, 'Exception')) {
+            if ($contextObject instanceof \Exception) {
                 $context[$contextKey] = $contextObject->__toString();
-            } else if (is_array($contextObject)) {
+            } elseif (is_array($contextObject)) {
                 $context[$contextKey] = json_encode($contextObject, true);
-            } else if (is_a($contextObject, 'DateTime')) {
+            } elseif ($contextObject instanceof \DateTime) {
                 $context[$contextKey] = $contextObject->format(\DateTime::RFC3339);
-            } else if (is_object($contextObject)) {
+            } elseif (is_object($contextObject)) {
                 $context[$contextKey] = $contextObject->__toString();
-            } else if (is_resource($contextObject)) {
+            } elseif (is_resource($contextObject)) {
                 $context[$contextKey] = get_resource_type($contextObject);
             }
 

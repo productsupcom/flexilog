@@ -8,7 +8,7 @@ class LoggerSpecTest extends \Psr\Log\Test\LoggerInterfaceTest
 
     function getLogger()
     {
-        $logger = new Logger('foo', array('Test' => $handler = new Handler\TestHandler()));
+        $logger = new Logger(array('Test' => $handler = new Handler\TestHandler()));
         $this->handler = $handler;
         return $logger;
     }

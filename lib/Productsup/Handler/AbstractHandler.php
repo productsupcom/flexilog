@@ -4,7 +4,7 @@ namespace Productsup\Handler;
 
 abstract class AbstractHandler implements HandlerInterface
 {
-    protected $logInfo = null;
+    private $logger = null;
     public $verbose = 0;
     public $minLevel = 0;
     protected $logLevels = array(
@@ -18,18 +18,17 @@ abstract class AbstractHandler implements HandlerInterface
         'debug' => 0
     );
 
-    public function __construct(\Productsup\LogInfo $logInfo, $minimalLevel = 'debug', $verbose = 0)
+    public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
-        $this->logInfo = $logInfo;
         $this->verbose = $verbose;
         if (isset($this->logLevels[$minimalLevel])) {
             $this->minLevel = $this->logLevels[$minimalLevel];
         }
     }
 
-    public function setLogInfo(\Productsup\LogInfo $logInfo)
+    public function setLogger(\Productsup\Logger $logger)
     {
-        $this->logInfo = $logInfo;
+        $this->logger = $logger;
     }
 
     /**
@@ -85,15 +84,14 @@ abstract class AbstractHandler implements HandlerInterface
 
     public function prepare($level, $message, array $context = array())
     {
-        $context = array_merge($context, get_object_vars($this->logInfo));
-        //$message = $this->interpolate($message, get_object_vars($this->logInfo));
+        $context = array_merge($context, get_object_vars($this->logger->logInfo));
         $message = $this->interpolate($message, $context);
         $fullMessage = null;
 
         if (isset($context['fullMessage'])) {
             $fullMessage = $context['fullMessage'];
             unset($context['fullMessage']);
-            $fullMessage = $this->interpolate($fullMessage, get_object_vars($this->logInfo));
+            $fullMessage = $this->interpolate($fullMessage, get_object_vars($this->logger->logInfo));
             $fullMessage = $this->interpolate($fullMessage, $context);
         }
 

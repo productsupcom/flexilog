@@ -12,9 +12,9 @@ class GelfHandler extends AbstractHandler
     // needed to test for PSR-3 compatibility
     public $logs = null;
 
-    public function __construct(\Productsup\LogInfo $logInfo, $minimalLevel = 'debug', $verbose = 0)
+    public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
-        parent::__construct($logInfo, $minimalLevel, $verbose);
+        parent::__construct($minimalLevel, $verbose);
         $this->transport = new Gelf\Transport\UdpTransport("***REMOVED***", 12201, Gelf\Transport\UdpTransport::CHUNK_SIZE_WAN);
         $this->publisher = new Gelf\Publisher();
     }

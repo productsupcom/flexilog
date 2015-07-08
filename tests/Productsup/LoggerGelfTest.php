@@ -12,9 +12,12 @@ class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
         $logInfo->site = 397;
         $logInfo->process = 'somepid';
 
-        $logger = new Logger('foo', array('Test' =>
-            $handler = new Handler\GelfHandler($logInfo, 'debug')
-        ));
+        $logger = new Logger(
+            array('Test' =>
+                $handler = new Handler\GelfHandler('debug')
+            ),
+            $logInfo
+        );
         $this->handler = $handler;
         return $logger;
     }
@@ -36,6 +39,5 @@ class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
             'date' => new \DateTime()
         );
         $logger->message('fullmessage and foo and exception plus array AND date rfc', $context);
-        exit();
     }
 }

@@ -11,9 +11,9 @@ class ShellHandler extends AbstractHandler
     // needed to test for PSR-3 compatibility
     public $logs = null;
 
-    public function __construct(\Productsup\LogInfo $logInfo, $minimalLevel = 'debug', $verbose = 0)
+    public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
-        parent::__construct($logInfo, $minimalLevel, $verbose);
+        parent::__construct($minimalLevel, $verbose);
         $this->CLImate = new League\CLImate\CLImate;
         $this->CLImate->output->defaultTo('error');
     }

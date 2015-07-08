@@ -5,20 +5,27 @@ namespace Productsup;
 class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
-    private $logInfo = null;
+    public $logInfo = null;
 
-    public function __construct($name, array $handlers = array())
+    public function __construct(array $handlers = array(), LogInfo $logInfo = null)
     {
-        $this->logInfo = new LogInfo();
-        $this->logInfo->loggerName = $name;
+        $this->logInfo = (!is_null($logInfo)) ? $logInfo : new LogInfo();
 
         if (empty($handlers)) {
-            $handlers['Gelf'] = new Productsup\Handlers\GelfHandler($this->logInfo);
+            $handlers['Gelf'] = new Productsup\Handlers\GelfHandler();
         }
 
-        foreach ($handlers as $handlerName => $handlerClassName) {
-            $this->addHandler($handlerName, $handlerClassName);
+        foreach ($handlers as $handlerName => $handlerObject) {
+            $handlerObject->setLogger($this);
+            $this->addHandler($handlerName, $handlerObject);
         }
+    }
+
+    public function setLogInfo(LogInfo $logInfo)
+    {
+        $this->logInfo = $logInfo;
+
+        return $this;
     }
 
     public function getName()

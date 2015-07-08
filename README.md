@@ -1,16 +1,22 @@
 # Logger
 
 ```php
+// the logInfo object is optional to pass
 $logInfo = new LogInfo();
+$logInfo->name = 'foobar';
 $logInfo->site = 397;
 $logInfo->process = 'somepid';
 
-$logger = new Logger('foo', 
+$logger = new Logger(
     array(
-        'Shell' => new Handler\ShellHandler($logInfo, 'debug', 2),
-        'Gelf' => new Handler\GelfHandler($logInfo)
-    )
+        'Shell' => new Handler\ShellHandler('debug', 2),
+        'Gelf' => new Handler\GelfHandler()
+    ),
+    $logInfo // optional parameter
 );
+
+// or can be passed like this
+$logger->setLogInfo($logInfo);
 ```
 
 ```php

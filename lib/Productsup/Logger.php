@@ -79,7 +79,7 @@ class Logger extends \Psr\Log\AbstractLogger
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
         foreach ($this->handlers as $key => $handler) {
-            $handler->write($level, $message, $context);
+            $handler->process($level, $message, $context);
         }
     }
 

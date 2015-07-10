@@ -6,10 +6,9 @@ class TestHandler extends AbstractHandler
 {
     public $logs = array();
 
-    public function write($level, $message, array $context = array())
+    public function write($level, $message, $splitFullMessage, array $context = array())
     {
-        $message = $this->interpolate($message, $context);
-
-        $this->logs[] = sprintf('%s %s', $level, $message);
+        // noop;
+        // taken care of in the process() in the Abstract
     }
 }

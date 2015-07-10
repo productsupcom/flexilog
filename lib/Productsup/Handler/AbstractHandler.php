@@ -18,6 +18,9 @@ abstract class AbstractHandler implements HandlerInterface
         'debug' => 0
     );
 
+    // needed to test for PSR-3 compatibility
+    public $logs = null;
+
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         $this->verbose = $verbose;
@@ -125,5 +128,15 @@ abstract class AbstractHandler implements HandlerInterface
         }
 
         return $splitFullMessage;
+    }
+
+    public function process($level, $message, array $context = array())
+    {
+        if ($this->logLevels[$level] >= $this->minLevel) {
+            list($message, $splitFullMessage, $context) = $this->prepare($level, $message, $context);
+            $this->logs[] = sprintf('%s %s', $level, $message);
+
+            $this->write($level, $message, $splitFullMessage, $context);
+        }
     }
 }

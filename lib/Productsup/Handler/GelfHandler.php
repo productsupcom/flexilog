@@ -23,10 +23,9 @@ class GelfHandler extends AbstractHandler
             $this->publisher->addTransport($this->transport);
 
             $gelfMessage = new Gelf\Message();
+            $shortMessageToSend = $message;
             if (count($splitFullMessage) != 1) {
                 $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
-            } else {
-                $shortMessageToSend = $message;
             }
 
             $gelfMessage->setShortMessage($shortMessageToSend)
@@ -39,10 +38,9 @@ class GelfHandler extends AbstractHandler
             if (!is_null($context) && is_array($context)) {
                 foreach ($context as $contextKey => $contextMessage) {
                     if (is_array($contextMessage)) {
-                        $gelfMessage->setAdditional($contextKey, print_r($contextMessage, true));
-                    } else {
-                        $gelfMessage->setAdditional($contextKey, $contextMessage);
+                        $contextMessage = print_r($contextMessage, true);
                     }
+                    $gelfMessage->setAdditional($contextKey, $contextMessage);
                 }
             }
 

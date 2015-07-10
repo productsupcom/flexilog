@@ -27,10 +27,9 @@ class FileHandler extends AbstractHandler
     {
         $i = 1;
         foreach ($splitFullMessage as $fullMessage) {
+            $shortMessageToSend = $message;
             if (count($splitFullMessage) != 1) {
                 $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
-            } else {
-                $shortMessageToSend = $message;
             }
 
             $line = sprintf('%s: %s'.PHP_EOL, strtoupper($level), $message);

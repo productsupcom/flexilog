@@ -28,7 +28,7 @@ class RedisHandler extends AbstractHandler
 
     public function publishLine($channelName, $lineValue)
     {
-        if (!$connectStatus = $this->Redis->connect($this->redisConfig['host'], $this->redisConfig['port'])) {
+        if (!$this->Redis->connect($this->redisConfig['host'], $this->redisConfig['port'])) {
             throw new \Exception('Could not connect to the Redis server.');
         }
 

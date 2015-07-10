@@ -22,10 +22,9 @@ class ShellHandler extends AbstractHandler
     {
         $i = 1;
         foreach ($splitFullMessage as $fullMessage) {
+            $shortMessageToSend = $message;
             if (count($splitFullMessage) != 1) {
                 $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
-            } else {
-                $shortMessageToSend = $message;
             }
 
             if ($this->logLevels[$level] <= 2) {
@@ -38,32 +37,37 @@ class ShellHandler extends AbstractHandler
                 $color = 'red';
             }
 
+            $levelOut = $this->CLImate->bold();
             if ($this->logLevels[$level] >= 5) {
-                $this->CLImate->bold()->blink()->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
-            } else {
-                $this->CLImate->bold()->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
+                $levelOut = $levelOut->blink();
             }
+            $levelOut->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
             $this->CLImate->out($shortMessageToSend);
 
             if ($this->verbose >= 1) {
-                $color = 'cyan';
-                if (!empty($fullMessage)) {
-                    $this->CLImate->inline(sprintf('<%s>%s</%s>: ', $color, 'Full Message', $color));
-                    $this->CLImate->out($fullMessage);
-                }
-                if ($this->verbose >= 2) {
-                    $this->CLImate->out(sprintf('<%s>%s</%s>: ', $color, 'Extra Variables', $color));
-                    foreach ($context as $contextKey => $contextObject) {
-                        $this->CLImate->tab()->inline(sprintf('<%s>%s</%s>: ', $color, $contextKey, $color));
-                        $this->CLImate->out($contextObject);
-                    }
-                }
-                if (!empty($fullMessage) || $this->verbose >= 2) {
-                    $this->CLImate->br();
-                }
+                $this->outputVerbose($fullMessage, $context);
             }
 
             $i++;
+        }
+    }
+
+    public function outputVerbose($fullMessage, $context)
+    {
+        $color = 'cyan';
+        if (!empty($fullMessage)) {
+            $this->CLImate->inline(sprintf('<%s>%s</%s>: ', $color, 'Full Message', $color));
+            $this->CLImate->out($fullMessage);
+        }
+        if ($this->verbose >= 2) {
+            $this->CLImate->out(sprintf('<%s>%s</%s>: ', $color, 'Extra Variables', $color));
+            foreach ($context as $contextKey => $contextObject) {
+                $this->CLImate->tab()->inline(sprintf('<%s>%s</%s>: ', $color, $contextKey, $color));
+                $this->CLImate->out($contextObject);
+            }
+        }
+        if (!empty($fullMessage) || $this->verbose >= 2) {
+            $this->CLImate->br();
         }
     }
 }

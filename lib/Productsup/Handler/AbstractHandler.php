@@ -88,6 +88,7 @@ abstract class AbstractHandler implements HandlerInterface
     public function prepare($level, $message, array $context = array())
     {
         $context = array_merge($context, get_object_vars($this->logger->logInfo));
+        $context['loglevel'] = $level;
         $message = $this->interpolate($message, $context);
         $fullMessage = null;
 
@@ -110,8 +111,6 @@ abstract class AbstractHandler implements HandlerInterface
         if (!is_null($fullMessage)) {
             if (is_array($fullMessage)) {
                $fullMessage = print_r($fullMessage, true);
-            } else {
-               $fullMessage = $fullMessage;
             }
 
             /* Because of the limit set by the GELF spec on the amount of chunks available
@@ -123,8 +122,6 @@ abstract class AbstractHandler implements HandlerInterface
              * Maybe you just shouldn't try to publish a book via Gelf? ;)
              */
             $splitFullMessage = str_split($fullMessage, 220000);
-        } else {
-            $splitFullMessage[0] = NULL;
         }
 
         return $splitFullMessage;

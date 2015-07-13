@@ -4,6 +4,9 @@ namespace Productsup\Handler;
 
 use Gelf;
 
+/**
+ * Ouput to a Graylog server
+ */
 class GelfHandler extends AbstractHandler
 {
     private $transport = null;

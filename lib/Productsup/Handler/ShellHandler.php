@@ -4,6 +4,9 @@ namespace Productsup\Handler;
 
 use League;
 
+/**
+ * Write to the Shell/Bash STDERR output using multi-color
+ */
 class ShellHandler extends AbstractHandler
 {
     private $CLImate = null;

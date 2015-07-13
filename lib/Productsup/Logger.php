@@ -2,11 +2,24 @@
 
 namespace Productsup;
 
+/**
+ * A PSR-3 compatible Logger that uses Handlers to output to multiple resources at the same time.
+ */
 class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
     public $logInfo = null;
 
+    /**
+     * Initialise a new Logger with specific Handlers.
+     * If no Handler is defined a default one will be initialized (Handler\GelfHandler)
+     *
+     * @param array $handlers Key/Value array where the Key is the Handler name
+     * and the object is an initialized Handler Interface
+     *      @property string Handler name
+     *      @var Handler\HandlerInterface Handler Interface
+     * @param LogInfo $logInfo
+     */
     public function __construct(array $handlers = array(), LogInfo $logInfo = null)
     {
         $this->logInfo = (!is_null($logInfo)) ? $logInfo : new LogInfo();
@@ -21,6 +34,11 @@ class Logger extends \Psr\Log\AbstractLogger
         }
     }
 
+    /**
+     * @param LogInfo $logInfo
+     *
+     * @return Logger $this
+     */
     public function setLogInfo(LogInfo $logInfo)
     {
         $this->logInfo = $logInfo;
@@ -28,6 +46,13 @@ class Logger extends \Psr\Log\AbstractLogger
         return $this;
     }
 
+    /**
+     * Set the Site ID for the LogInfo
+     *
+     * @param integer $siteId the Site ID
+     *
+     * @return Logger $this
+     */
     public function setSiteId($siteId)
     {
         $this->logInfo->siteId = $siteId;
@@ -35,6 +60,13 @@ class Logger extends \Psr\Log\AbstractLogger
         return $this;
     }
 
+    /**
+     * Set the Process ID for the LogInfo
+     *
+     * @param string $pid the Process ID
+     *
+     * @return Logger $this
+     */
     public function setProcessId($pid)
     {
         $this->logInfo->pid = $pid;
@@ -42,6 +74,14 @@ class Logger extends \Psr\Log\AbstractLogger
         return $this;
     }
 
+    /**
+     * Add a new Handler to the Logger
+     *
+     * @param string $handlerName Handler Name
+     * @param Handler\HandlerInterface $handler Initialized Handler Interface
+     *
+     * @return Logger $this
+     */
     public function addHandler($handlerName, Handler\HandlerInterface $handler)
     {
         $this->handlers[$handlerName] = $handler;
@@ -49,6 +89,13 @@ class Logger extends \Psr\Log\AbstractLogger
         return $this;
     }
 
+    /**
+     * Get a Handler by name
+     *
+     * @param string $handlerName Handler Name
+     *
+     * @return Handler\HandlerInterface $handler Handler Interface
+     */
     public function getHandler($handlerName)
     {
         if (isset($this->handlers[$handlerName])) {
@@ -58,6 +105,13 @@ class Logger extends \Psr\Log\AbstractLogger
         return null;
     }
 
+    /**
+     * Remove a Handler from the Logger
+     *
+     * @param string $handlerName Handler Name
+     *
+     * @return Logger $this
+     */
     public function removeHandler($handlerName)
     {
         unset($this->handlers[$handlerName]);
@@ -83,6 +137,15 @@ class Logger extends \Psr\Log\AbstractLogger
         }
     }
 
+    /**
+     * Logs with an arbitrary level.
+     * Convenience method, if no level is provided, Psr\Log\LogLevel::NOTICE will be used.
+     *
+     * @param mixed $level
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
     public function message($message, array $context = array(), $level = null)
     {
         if (!isset($level)) {

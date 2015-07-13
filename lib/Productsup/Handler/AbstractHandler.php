@@ -2,6 +2,9 @@
 
 namespace Productsup\Handler;
 
+/**
+ * Abstract Handler to simplify the implementation of a Handler Interface
+ */
 abstract class AbstractHandler implements HandlerInterface
 {
     private $logger = null;
@@ -21,6 +24,12 @@ abstract class AbstractHandler implements HandlerInterface
     // needed to test for PSR-3 compatibility
     public $logs = null;
 
+    /**
+     * Initialize the Handler, optionally with a minimal logging level
+     *
+     * @param \Psr\LogLevel $minimalLevel the minimal severity of the LogLevel to start logging with
+     * @param integer $verbose the Verbosity of the Log
+     */
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         $this->verbose = $verbose;
@@ -29,13 +38,27 @@ abstract class AbstractHandler implements HandlerInterface
         }
     }
 
+    /**
+     * Set the Logger for the Handler
+     *
+     * @param \Productsup\Logger $logger
+     *
+     * @return HandlerInterface $this
+     */
     public function setLogger(\Productsup\Logger $logger)
     {
         $this->logger = $logger;
+
+        return $this;
     }
 
     /**
      * Interpolates context values into the message placeholders.
+     *
+     * @param string $message Message to Log with Placeholders, defined by {curly}-braces.
+     * @param array $context Key/Value array with properties for the Placeholders.
+     *
+     * @return string $message Message with Placeholders replaced by the context.
      */
     public function interpolate($message, array $context = array())
     {
@@ -51,7 +74,15 @@ abstract class AbstractHandler implements HandlerInterface
         return strtr($message, $replace);
     }
 
-    function prepareContext($context)
+    /**
+     * Prepare the Context before interpolation
+     * Turns Objects into String representations.
+     *
+     * @param array $context Key/Value array with properties for the Placeholders.
+     *
+     * @return array $conext Cleaned context
+     */
+    function prepareContext(array $context)
     {
         // cleanup any thrown exceptions
         foreach ($context as $contextKey => $contextObject) {
@@ -85,6 +116,19 @@ abstract class AbstractHandler implements HandlerInterface
         return $context;
     }
 
+    /**
+     * Prepare the Log Message before writing
+     *
+     * @param \Psr\LogLevel $level
+     * @param string $message Message to Log with Placeholders, defined by {curly}-braces.
+     * @param array $context Key/Value array with properties for the Placeholders.
+     *
+     * @return array {
+     *      @var $message
+     *      @var $splitFullMessage
+     *      @var $context
+     * }
+     */
     public function prepare($level, $message, array $context = array())
     {
         $context = array_merge($context, get_object_vars($this->logger->logInfo));
@@ -105,7 +149,15 @@ abstract class AbstractHandler implements HandlerInterface
         return array($message, $splitFullMessage, $context);
     }
 
-    public function splitMessage($fullMessage)
+    /**
+     * Split the Full Message into chunks before writing it to the Logger
+     *
+     * @param string $fullMessage
+     * @param integer $size Defaults to 220000bytes
+     *
+     * @return array $splitFullMessage
+     */
+    public function splitMessage($fullMessage, $size = 220000)
     {
         $splitFullMessage = array();
         if (!is_null($fullMessage)) {
@@ -121,12 +173,21 @@ abstract class AbstractHandler implements HandlerInterface
              * the max size, however if we make it bigger it doesn't seem to send at all.
              * Maybe you just shouldn't try to publish a book via Gelf? ;)
              */
-            $splitFullMessage = str_split($fullMessage, 220000);
+            $splitFullMessage = str_split($fullMessage, $size);
         }
 
         return $splitFullMessage;
     }
 
+    /**
+     * Process the Logged message
+     *
+     * @param \Psr\LogLevel $level
+     * @param string $message Message to Log with Placeholders, defined by {curly}-braces.
+     * @param array $context Key/Value array with properties for the Placeholders.
+     *
+     * @return null
+     */
     public function process($level, $message, array $context = array())
     {
         if ($this->logLevels[$level] >= $this->minLevel) {

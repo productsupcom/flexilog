@@ -4,6 +4,9 @@ namespace Productsup\Handler;
 
 use League;
 
+/**
+ * Write to a specified File
+ */
 class FileHandler extends AbstractHandler
 {
     private $handle = null;

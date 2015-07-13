@@ -4,6 +4,9 @@ namespace Productsup\Handler;
 
 use Redis;
 
+/**
+ * Publish to a Redis channel
+ */
 class RedisHandler extends AbstractHandler
 {
     private $Redis = null;

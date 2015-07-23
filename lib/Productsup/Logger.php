@@ -25,7 +25,7 @@ class Logger extends \Psr\Log\AbstractLogger
         $this->logInfo = (!is_null($logInfo)) ? $logInfo : new LogInfo();
 
         if (empty($handlers)) {
-            $handlers['Gelf'] = new Productsup\Handlers\GelfHandler();
+            $handlers['Gelf'] = new Handler\GelfHandler();
         }
 
         foreach ($handlers as $handlerName => $handlerObject) {
@@ -103,6 +103,16 @@ class Logger extends \Psr\Log\AbstractLogger
         }
 
         return null;
+    }
+
+    /**
+     * Get the list of Handlers registered by name
+     *
+     * @return array Handler names
+     */
+    public function getHandlerNames()
+    {
+        return array_keys($this->handlers);
     }
 
     /**

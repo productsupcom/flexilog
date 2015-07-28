@@ -24,9 +24,9 @@ class RedisHandler extends AbstractHandler
         if (!isset($redisConfig['channel'])) {
             throw new \Exception('Redis Channel to Publish to has not been provided');
         }
-        parent::__construct($minimalLevel, $verbose);
         $this->Redis = new Redis();
         $this->redisConfig = $redisConfig;
+        parent::__construct($minimalLevel, $verbose);
     }
 
     public function publishLine($channelName, $lineValue)

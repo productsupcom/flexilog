@@ -7,7 +7,7 @@ namespace Productsup\Handler;
  */
 abstract class AbstractHandler implements HandlerInterface
 {
-    private $logger = null;
+    protected $logger = null;
     public $verbose = 0;
     public $minLevel = 0;
     protected $logLevels = array(
@@ -25,7 +25,7 @@ abstract class AbstractHandler implements HandlerInterface
     public $logs = null;
 
     /**
-     * Initialize the Handler, optionally with a minimal logging level
+     * Construct the Handler, optionally with a minimal logging level
      *
      * @param \Psr\LogLevel $minimalLevel the minimal severity of the LogLevel to start logging with
      * @param integer $verbose the Verbosity of the Log
@@ -36,6 +36,13 @@ abstract class AbstractHandler implements HandlerInterface
         if (isset($this->logLevels[$minimalLevel])) {
             $this->minLevel = $this->logLevels[$minimalLevel];
         }
+    }
+
+    /**
+     * Initialize the Handler, is called after it's been registered with the logger
+     */
+    public function init()
+    {
     }
 
     /**

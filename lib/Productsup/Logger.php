@@ -30,6 +30,7 @@ class Logger extends \Psr\Log\AbstractLogger
 
         foreach ($handlers as $handlerName => $handlerObject) {
             $handlerObject->setLogger($this);
+            $handlerObject->init();
             $this->addHandler($handlerName, $handlerObject);
         }
     }
@@ -82,9 +83,11 @@ class Logger extends \Psr\Log\AbstractLogger
      *
      * @return Logger $this
      */
-    public function addHandler($handlerName, Handler\HandlerInterface $handler)
+    public function addHandler($handlerName, Handler\HandlerInterface $handlerObject)
     {
-        $this->handlers[$handlerName] = $handler;
+        $handlerObject->setLogger($this);
+        $handlerObject->init();
+        $this->handlers[$handlerName] = $handlerObject;
 
         return $this;
     }

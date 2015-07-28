@@ -24,6 +24,11 @@ class LogInfo
     public $facility = null;
 
     /**
+     * @var string $host the Host the Log originates from
+     */
+    public $host = null;
+
+    /**
      * @param string $string a string like site:123;process:abcdef;facility:destination
      * @return static
      */
@@ -38,5 +43,10 @@ class LogInfo
             }
         }
         return $info;
+    }
+
+    public function __construct()
+    {
+        $this->host = gethostname();
     }
 }

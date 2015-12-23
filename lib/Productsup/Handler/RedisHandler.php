@@ -11,9 +11,9 @@ class RedisHandler extends AbstractHandler
 {
     private $Redis = null;
     private $redisConfig = array();
-    private $yolo = false;
+    private $fingersCrossed = false;
 
-    public function __construct($redisConfig = array(), $minimalLevel = 'debug', $verbose = 0, $yolo = false)
+    public function __construct($redisConfig = array(), $minimalLevel = 'debug', $verbose = 0, $fingersCrossed = false)
     {
         if (!class_exists('Redis')) {
             throw new \Exception('Class Redis is not found');
@@ -25,7 +25,7 @@ class RedisHandler extends AbstractHandler
         if (!isset($redisConfig['channel'])) {
             throw new \Exception('Redis Channel to Publish to has not been provided');
         }
-        $this->yolo = $yolo;
+        $this->fingersCrossed = $fingersCrossed;
         $this->Redis = new Redis();
         $this->redisConfig = $redisConfig;
         parent::__construct($minimalLevel, $verbose);
@@ -34,7 +34,7 @@ class RedisHandler extends AbstractHandler
     public function publishLine($channelName, $lineValue)
     {
         if (!$this->Redis->connect($this->redisConfig['host'], $this->redisConfig['port'])) {
-            if ($this->yolo) {
+            if ($this->fingersCrossed) {
                 return;
             }
 

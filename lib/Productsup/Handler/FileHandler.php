@@ -17,7 +17,7 @@ class FileHandler extends AbstractHandler
     public function __construct($filename = 'log.log', $minimalLevel = 'debug', $verbose = 0)
     {
         parent::__construct($minimalLevel, $verbose);
-        if (!is_writable($filename)) {
+        if ((!file_exists($filename) && file_put_contents($filename,'') === false) ||!is_writable($filename)) {
             throw new \Exception('No write permission on file:'.$filename);
         }
         $this->handle = fopen($filename, 'a');

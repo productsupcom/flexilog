@@ -17,14 +17,13 @@ class GelfHandler extends AbstractHandler
         parent::__construct($minimalLevel, $verbose);
         $this->transport = new Gelf\Transport\UdpTransport("***REMOVED***", 12201, Gelf\Transport\UdpTransport::CHUNK_SIZE_WAN);
         $this->publisher = new Gelf\Publisher();
+        $this->publisher->addTransport($this->transport);
     }
 
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         $i = 1;
         foreach ($splitFullMessage as $fullMessage) {
-            $this->publisher->addTransport($this->transport);
-
             $gelfMessage = new Gelf\Message();
             $shortMessageToSend = $message;
             if (count($splitFullMessage) != 1) {

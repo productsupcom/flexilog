@@ -33,11 +33,11 @@ class GelfHandler extends AbstractHandler
             $gelfMessage->setShortMessage($shortMessageToSend)
                 ->setLevel($level);
 
-            if (!is_null($fullMessage)) {
+            if (isset($fullMessage)) {
                 $gelfMessage->setFullMessage($fullMessage);
             }
 
-            if (!is_null($context) && is_array($context)) {
+            if (isset($context) && is_array($context)) {
                 foreach ($context as $contextKey => $contextMessage) {
                     if (is_array($contextMessage)) {
                         $contextMessage = print_r($contextMessage, true);

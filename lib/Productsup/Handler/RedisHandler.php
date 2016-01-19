@@ -41,7 +41,7 @@ class RedisHandler extends AbstractHandler
             throw new \Exception('Could not connect to the Redis server.');
         }
 
-        if (isset($this->redisConfig['password']) && !is_null($this->redisConfig['password'])) {
+        if (isset($this->redisConfig['password'])) {
             $this->Redis->auth($this->redisConfig['password']);
         }
 

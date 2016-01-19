@@ -22,7 +22,7 @@ class Logger extends \Psr\Log\AbstractLogger
      */
     public function __construct(array $handlers = array(), LogInfo $logInfo = null)
     {
-        $this->logInfo = (!is_null($logInfo)) ? $logInfo : new LogInfo();
+        $this->logInfo = (isset($logInfo)) ? $logInfo : new LogInfo();
 
         if (empty($handlers)) {
             $handlers['Gelf'] = new Handler\GelfHandler();

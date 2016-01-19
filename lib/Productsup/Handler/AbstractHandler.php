@@ -167,7 +167,7 @@ abstract class AbstractHandler implements HandlerInterface
     public function splitMessage($fullMessage, $size = 220000)
     {
         $splitFullMessage = array(null);
-        if (!is_null($fullMessage)) {
+        if (isset($fullMessage)) {
             if (is_array($fullMessage)) {
                $fullMessage = print_r($fullMessage, true);
             }

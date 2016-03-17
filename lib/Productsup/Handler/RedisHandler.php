@@ -52,6 +52,17 @@ class RedisHandler extends AbstractHandler
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         $line = sprintf('%s: %s'.PHP_EOL, strtoupper($level), $message);
-        $this->publishLine($this->redisConfig['channel'], $line);
+
+        $line = array(
+            'date'    => date('Y-m-d'),
+            'time'    => date('H:i:s'),
+            'type'    => $level,
+            'message' => $message,
+            'process' => getenv('PRODUCTSUP_PID'),
+            'host'    => gethostname()
+        );
+
+        $lineValue = json_encode($line).PHP_EOL;
+        $this->publishLine($this->redisConfig['channel'], $lineValue);
     }
 }

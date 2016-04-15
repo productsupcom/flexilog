@@ -71,7 +71,7 @@ public function execute(InputInterface $input, OutputInterface $output)
 {
     $logger = new \Productsup\Logger(
         array(
-            'Console' => new \Productsup\Handler\SymfonyconsoleHandler('debug', 2, $output)
+            'Console' => new \Productsup\Handler\SymfonyConsoleHandler('debug', 2, $output)
         )
     );
 

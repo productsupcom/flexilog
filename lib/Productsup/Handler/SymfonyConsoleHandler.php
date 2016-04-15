@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Write to the Symfony Console Output
  */
-class SymfonyconsoleHandler extends AbstractHandler
+class SymfonyConsoleHandler extends AbstractHandler
 {
     private $outputInterface = null;
     private $verbosityLevelMap = array(

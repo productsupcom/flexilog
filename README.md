@@ -63,3 +63,26 @@ $logger->critical('critical message', $context);
 ```
 
 Check the [generated API docs](API.md) for more info.
+
+## Symfony Console
+
+```
+public function execute(InputInterface $input, OutputInterface $output)
+{
+    $logger = new \Productsup\Logger(
+        array(
+            'Console' => new \Productsup\Handler\SymfonyconsoleHandler('debug', 2, $output)
+        )
+    );
+
+    $logger->message('message');
+    $logger->error('errrooorrr');
+}
+```
+
+Outputs
+
+```
+[notice] message
+[error] errrooorrr
+```

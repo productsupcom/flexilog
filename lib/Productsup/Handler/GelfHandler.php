@@ -22,6 +22,10 @@ class GelfHandler extends AbstractHandler
 
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
+        if ($message === '') {
+            return;
+        }
+
         $i = 1;
         foreach ($splitFullMessage as $fullMessage) {
             $gelfMessage = new Gelf\Message();

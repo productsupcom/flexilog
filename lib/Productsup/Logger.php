@@ -146,7 +146,7 @@ class Logger extends \Psr\Log\AbstractLogger
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
         foreach ($this->handlers as $handler) {
-            $handler->process($level, $message, $context);
+            $handler->process($level, (string) $message, $context);
         }
     }
 
@@ -167,6 +167,6 @@ class Logger extends \Psr\Log\AbstractLogger
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
 
-        call_user_func(__CLASS__.'::'.$level, $message, $context);
+        call_user_func(__CLASS__.'::'.$level, (string) $message, $context);
     }
 }

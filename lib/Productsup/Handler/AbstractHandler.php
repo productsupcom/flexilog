@@ -72,6 +72,9 @@ abstract class AbstractHandler implements HandlerInterface
         // build a replacement array with braces around the context keys
         $replace = array();
         foreach ($context as $key => $val) {
+            if (is_numeric($val)) {
+                $val = (string) $val;
+            }
             if (is_string($val)) {
                 $replace['{' . $key . '}'] = $val;
             }

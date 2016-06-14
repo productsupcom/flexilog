@@ -86,3 +86,13 @@ Outputs
 [notice] message
 [error] errrooorrr
 ```
+
+# Caveats
+The Loginfo has the following properties that are always merged. Thus they are reserved as keywords for the `array $context`.
+
+```
+site
+process
+facility
+host
+```

@@ -44,7 +44,7 @@ class ShellHandler extends AbstractHandler
             if ($this->logLevels[$level] >= 5) {
                 $levelOut = $levelOut->blink();
             }
-            $levelOut->inline(sprintf('<%s>%s</%s>: ', $color, strtoupper($level), $color));
+            $levelOut->inline(sprintf('%s <%s>%s</%s>: ', date('H:i:s'), $color, strtoupper($level), $color));
             $this->CLImate->out($shortMessageToSend);
 
             if ($this->verbose >= 1) {

@@ -13,7 +13,7 @@ class LoggerShellTest extends \Psr\Log\Test\LoggerInterfaceTest
         $logInfo->process = 'somepid';
 
         $logger = new Logger(array('Test' =>
-            $handler = new Handler\ShellHandler('debug', 2),
+            $handler = new Handler\ShellHandler('trace', 2),
         ), $logInfo);
         $this->handler = $handler;
         return $logger;

@@ -12,7 +12,7 @@ class GelfHandler extends AbstractHandler
     private $transport = null;
     private $publisher = null;
 
-    public function __construct($minimalLevel = 'notice', $verbose = 0)
+    public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         parent::__construct($minimalLevel, $verbose);
         $this->transport = new Gelf\Transport\UdpTransport("***REMOVED***", 12201, Gelf\Transport\UdpTransport::CHUNK_SIZE_WAN);

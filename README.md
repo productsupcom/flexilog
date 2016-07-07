@@ -3,7 +3,6 @@
 ```php
 // the logInfo object is optional to pass
 $logInfo = new LogInfo();
-$logInfo->name = 'foobar';
 $logInfo->site = 397;
 $logInfo->process = 'somepid';
 

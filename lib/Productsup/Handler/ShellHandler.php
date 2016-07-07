@@ -29,7 +29,7 @@ class ShellHandler extends AbstractHandler
 
             if ($this->logLevels[$level] >= 7) {
                 $color = 'dark_gray';
-            } elseif ($this->logLevels[$level] == 5) {
+            } elseif ($this->logLevels[$level] >= 5) {
                 $color = 'green';
             } elseif ($this->logLevels[$level] == 4) {
                 $color = 'yellow';

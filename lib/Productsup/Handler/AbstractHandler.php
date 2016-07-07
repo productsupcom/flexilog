@@ -9,16 +9,17 @@ abstract class AbstractHandler implements HandlerInterface
 {
     protected $logger = null;
     public $verbose = 0;
-    public $minLevel = 0;
+    public $minLevel = 7;
     protected $logLevels = array(
-        'emergency' => 7,
-        'alert' => 6,
-        'critical' => 5,
-        'error' => 4,
-        'warning' => 3,
-        'notice' => 2,
-        'info' => 1,
-        'debug' => 0
+        'emergency' => 0,
+        'alert' => 1,
+        'critical' => 2,
+        'error' => 3,
+        'warning' => 4,
+        'notice' => 5,
+        'info' => 6,
+        'debug' => 7,
+        'trace' => 8,
     );
 
     // needed to test for PSR-3 compatibility
@@ -200,7 +201,7 @@ abstract class AbstractHandler implements HandlerInterface
      */
     public function process($level, $message, array $context = array())
     {
-        if ($this->logLevels[$level] >= $this->minLevel) {
+        if ($this->logLevels[$level] <= $this->minLevel) {
             list($message, $splitFullMessage, $context) = $this->prepare($level, $message, $context);
             $this->logs[] = sprintf('%s %s', $level, $message);
 

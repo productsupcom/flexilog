@@ -21,8 +21,7 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
 
     function getLogs()
     {
-        $logs = $this->handler->logs;
-        return $logs;
+        return $this->handler->logs;
     }
 
     function testFullMessage()

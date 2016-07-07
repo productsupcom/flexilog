@@ -11,9 +11,6 @@ class ShellHandler extends AbstractHandler
 {
     private $CLImate = null;
 
-    // needed to test for PSR-3 compatibility
-    public $logs = null;
-
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         parent::__construct($minimalLevel, $verbose);

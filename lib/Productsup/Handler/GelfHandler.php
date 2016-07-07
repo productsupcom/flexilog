@@ -26,6 +26,8 @@ class GelfHandler extends AbstractHandler
             return;
         }
 
+        $level = ($level == 'trace') ? 'debug' : $level;
+
         $i = 1;
         foreach ($splitFullMessage as $fullMessage) {
             $gelfMessage = new Gelf\Message();

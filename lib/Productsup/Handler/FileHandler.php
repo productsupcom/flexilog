@@ -11,9 +11,6 @@ class FileHandler extends AbstractHandler
 {
     private $handle = null;
 
-    // needed to test for PSR-3 compatibility
-    public $logs = null;
-
     public function __construct($filename = 'log.log', $minimalLevel = 'debug', $verbose = 0)
     {
         parent::__construct($minimalLevel, $verbose);

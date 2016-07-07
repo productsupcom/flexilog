@@ -37,5 +37,6 @@ class LoggerShellTest extends \Psr\Log\Test\LoggerInterfaceTest
         );
         $logger->message('default message', $context);
         $logger->message('critical message', $context, 'critical');
+        $logger->message('trace message', $context, 'trace');
     }
 }

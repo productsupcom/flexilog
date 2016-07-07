@@ -39,5 +39,6 @@ class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
             'date' => new \DateTime()
         );
         $logger->message('fullmessage and foo and exception plus array AND date rfc', $context);
+        $logger->message('trace message', $context, 'trace');
     }
 }

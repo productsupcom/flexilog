@@ -133,6 +133,19 @@ class Logger extends \Psr\Log\AbstractLogger
     }
 
     /**
+     * Detailed trace information.
+     * Outputs as DEBUG
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function trace($message, array $context = array())
+    {
+        $this->log(Log\LogLevel::TRACE, $message, $context);
+    }
+
+    /**
      * Logs with an arbitrary level.
      *
      * @param mixed $level
@@ -142,7 +155,7 @@ class Logger extends \Psr\Log\AbstractLogger
      */
     public function log($level, $message, array $context = array())
     {
-        if (!defined('\Psr\Log\LogLevel::'.strtoupper($level))) {
+        if (!defined('Productsup\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
         foreach ($this->handlers as $handler) {
@@ -162,8 +175,8 @@ class Logger extends \Psr\Log\AbstractLogger
     public function message($message, array $context = array(), $level = null)
     {
         if (!isset($level)) {
-            $level = \Psr\Log\LogLevel::NOTICE;
-        } elseif (!defined('\Psr\Log\LogLevel::'.strtoupper($level))) {
+            $level = Log\LogLevel::NOTICE;
+        } elseif (!defined('Productsup\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
 

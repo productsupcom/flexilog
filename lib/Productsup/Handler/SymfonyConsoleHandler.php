@@ -2,7 +2,7 @@
 
 namespace Productsup\Handler;
 
-use Psr\Log\LogLevel;
+use Productsup\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -20,6 +20,7 @@ class SymfonyConsoleHandler extends AbstractHandler
         LogLevel::NOTICE => OutputInterface::VERBOSITY_VERBOSE,
         LogLevel::INFO => OutputInterface::VERBOSITY_VERY_VERBOSE,
         LogLevel::DEBUG => OutputInterface::VERBOSITY_DEBUG,
+        LogLevel::TRACE => OutputInterface::VERBOSITY_DEBUG,
     );
 
     private $formatLevelMap = array(
@@ -28,9 +29,9 @@ class SymfonyConsoleHandler extends AbstractHandler
         LogLevel::CRITICAL => 'error',
         LogLevel::ERROR => 'error',
         LogLevel::WARNING => 'info',
-        LogLevel::NOTICE => 'info',
-        LogLevel::INFO => 'info',
         LogLevel::DEBUG => 'info',
+        LogLevel::INFO => 'info',
+        LogLevel::TRACE => 'fg=gray',
     );
 
     // needed to test for PSR-3 compatibility

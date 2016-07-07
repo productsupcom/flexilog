@@ -11,9 +11,6 @@ class ShellHandler extends AbstractHandler
 {
     private $CLImate = null;
 
-    // needed to test for PSR-3 compatibility
-    public $logs = null;
-
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         parent::__construct($minimalLevel, $verbose);
@@ -30,18 +27,20 @@ class ShellHandler extends AbstractHandler
                 $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
             }
 
-            if ($this->logLevels[$level] <= 2) {
+            if ($this->logLevels[$level] >= 7) {
+                $color = 'dark_gray';
+            } elseif ($this->logLevels[$level] == 5) {
                 $color = 'green';
-            } elseif ($this->logLevels[$level] == 3) {
-                $color = 'yellow';
             } elseif ($this->logLevels[$level] == 4) {
+                $color = 'yellow';
+            } elseif ($this->logLevels[$level] == 3) {
                 $color = 'light_red';
-            } elseif ($this->logLevels[$level] >= 5) {
+            } elseif ($this->logLevels[$level] <= 2) {
                 $color = 'red';
             }
 
             $levelOut = $this->CLImate->bold();
-            if ($this->logLevels[$level] >= 5) {
+            if ($this->logLevels[$level] <= 2) {
                 $levelOut = $levelOut->blink();
             }
             $levelOut->inline(sprintf('%s <%s>%s</%s>: ', date('H:i:s'), $color, strtoupper($level), $color));

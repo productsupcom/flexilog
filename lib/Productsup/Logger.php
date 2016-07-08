@@ -153,13 +153,13 @@ class Logger extends \Psr\Log\AbstractLogger
      * @param array $context
      * @return null
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = array(), $muted = false)
     {
         if (!defined('Productsup\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
         foreach ($this->handlers as $handler) {
-            $handler->process($level, (string) $message, $context);
+            $handler->process($level, (string) $message, $context, $muted);
         }
     }
 
@@ -172,7 +172,7 @@ class Logger extends \Psr\Log\AbstractLogger
      * @param array $context
      * @return null
      */
-    public function message($message, array $context = array(), $level = null)
+    public function message($message, array $context = array(), $level = null, $muted = false)
     {
         if (!isset($level)) {
             $level = Log\LogLevel::NOTICE;
@@ -180,6 +180,6 @@ class Logger extends \Psr\Log\AbstractLogger
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
 
-        call_user_func(__CLASS__.'::'.$level, (string) $message, $context);
+        $this->log($level, $message, $context, $muted);
     }
 }

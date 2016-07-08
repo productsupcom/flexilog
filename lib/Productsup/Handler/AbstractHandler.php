@@ -199,8 +199,11 @@ abstract class AbstractHandler implements HandlerInterface
      *
      * @return null
      */
-    public function process($level, $message, array $context = array())
+    public function process($level, $message, array $context = array(), $muted = false)
     {
+        if ($this->verbose == -1 && $muted) {
+            return;
+        }
         if ($this->logLevels[$level] <= $this->minLevel) {
             list($message, $splitFullMessage, $context) = $this->prepare($level, $message, $context);
             $this->logs[] = sprintf('%s %s', $level, $message);

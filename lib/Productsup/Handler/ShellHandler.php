@@ -27,20 +27,20 @@ class ShellHandler extends AbstractHandler
                 $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
             }
 
-            if ($this->logLevels[$level] >= 7) {
+            if (self::logLevels[$level] >= 7) {
                 $color = 'dark_gray';
-            } elseif ($this->logLevels[$level] >= 5) {
+            } elseif (self::logLevels[$level] >= 5) {
                 $color = 'green';
-            } elseif ($this->logLevels[$level] == 4) {
+            } elseif (self::logLevels[$level] == 4) {
                 $color = 'yellow';
-            } elseif ($this->logLevels[$level] == 3) {
+            } elseif (self::logLevels[$level] == 3) {
                 $color = 'light_red';
-            } elseif ($this->logLevels[$level] <= 2) {
+            } elseif (self::logLevels[$level] <= 2) {
                 $color = 'red';
             }
 
             $levelOut = $this->CLImate->bold();
-            if ($this->logLevels[$level] <= 2) {
+            if (self::logLevels[$level] <= 2) {
                 $levelOut = $levelOut->blink();
             }
             $levelOut->inline(sprintf('%s <%s>%s</%s>: ', date('H:i:s'), $color, strtoupper($level), $color));

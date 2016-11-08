@@ -10,7 +10,7 @@ abstract class AbstractHandler implements HandlerInterface
     protected $logger = null;
     public $verbose = 0;
     public $minLevel = 7;
-    protected $logLevels = array(
+    const logLevels = array(
         'emergency' => 0,
         'alert' => 1,
         'critical' => 2,
@@ -34,8 +34,8 @@ abstract class AbstractHandler implements HandlerInterface
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         $this->verbose = $verbose;
-        if (isset($this->logLevels[$minimalLevel])) {
-            $this->minLevel = $this->logLevels[$minimalLevel];
+        if (isset(self::logLevels[$minimalLevel])) {
+            $this->minLevel = self::logLevels[$minimalLevel];
         }
     }
 
@@ -204,7 +204,7 @@ abstract class AbstractHandler implements HandlerInterface
         if ($this->verbose == -1 && $muted) {
             return;
         }
-        if ($this->logLevels[$level] <= $this->minLevel) {
+        if (self::logLevels[$level] <= $this->minLevel) {
             list($message, $splitFullMessage, $context) = $this->prepare($level, $message, $context);
             $this->logs[] = sprintf('%s %s', $level, $message);
 

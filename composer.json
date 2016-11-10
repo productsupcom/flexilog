@@ -1,7 +1,7 @@
 {
-    "name": "productsupcom/logger",
+    "name": "productsupcom/flexilog",
     "type": "library",
-    "description": "PSR-3 Compatible Logger",
+    "description": "Flexible PSR-3 Compatible Logger",
     "license": "proprietary",
     "require": {
         "php": ">=5.6.0",

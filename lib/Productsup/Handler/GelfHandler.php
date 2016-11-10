@@ -12,10 +12,18 @@ class GelfHandler extends AbstractHandler
     private $transport = null;
     private $publisher = null;
 
-    public function __construct($minimalLevel = 'debug', $verbose = 0)
+    public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
     {
+        if (!isset($additionalParameters['server'])) {
+            throw new \Exception('Server parameter must be set');
+        }
+        $port = isset($additionalParameters['port']) ? $additionalParameters['port'] : 12201;
         parent::__construct($minimalLevel, $verbose);
-        $this->transport = new Gelf\Transport\UdpTransport("***REMOVED***", 12201, Gelf\Transport\UdpTransport::CHUNK_SIZE_WAN);
+        $this->transport = new Gelf\Transport\UdpTransport(
+            $additionalParameters['server'],
+            $port,
+            Gelf\Transport\UdpTransport::CHUNK_SIZE_WAN
+        );
         $this->publisher = new Gelf\Publisher();
         $this->publisher->addTransport($this->transport);
     }

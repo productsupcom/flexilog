@@ -11,8 +11,12 @@ class FileHandler extends AbstractHandler
 {
     private $handle = null;
 
-    public function __construct($filename = 'log.log', $minimalLevel = 'debug', $verbose = 0)
+    public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
     {
+        if (!isset($additionalParameters['filename'])) {
+            throw new \Exception('Filename parameter must be set');
+        }
+        $filename = $additionalParameters['filename'];
         parent::__construct($minimalLevel, $verbose);
         if ((!file_exists($filename) && file_put_contents($filename,'') === false) ||!is_writable($filename)) {
             throw new \Exception('No write permission on file:'.$filename);

@@ -13,7 +13,7 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
         $logInfo->process = 'somepid';
 
         $logger = new Logger(array('Test' =>
-            $handler = new Handler\FileHandler('/Users/twisted/productsup/logger/test.log', 'trace', 0),
+            $handler = new Handler\FileHandler('trace', 0, ['filename' => '/Users/twisted/productsup/logger/test.log']),
         ), $logInfo);
         $this->handler = $handler;
         return $logger;

@@ -24,7 +24,7 @@ class LoggerRedisTest extends \Psr\Log\Test\LoggerInterfaceTest
         );
 
         $logger = new Logger(array('Redis' =>
-            $handler = new Handler\RedisHandler($redisConfig, 'debug', 0),
+            $handler = new Handler\RedisHandler('debug', 0, ['redisConfig'=>$redisConfig]),
         ), $logInfo);
         $this->handler = $handler;
         return $logger;

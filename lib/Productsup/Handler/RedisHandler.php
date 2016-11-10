@@ -13,19 +13,21 @@ class RedisHandler extends AbstractHandler
     private $redisConfig = array();
     private $fingersCrossed = false;
 
-    public function __construct($redisConfig = array(), $minimalLevel = 'debug', $verbose = 0, $fingersCrossed = false)
+    public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
     {
         if (!class_exists('Redis')) {
             throw new \Exception('Class Redis is not found');
         }
-
-        if (!isset($redisConfig['host'])) {
+        if (!isset($additionalParameters['redisConfig'])) {
             throw new \Exception('Redis configuration has not been provided.');
         }
+        $redisConfig = $additionalParameters['redisConfig'];
         if (!isset($redisConfig['channel'])) {
             throw new \Exception('Redis Channel to Publish to has not been provided');
         }
-        $this->fingersCrossed = $fingersCrossed;
+        if (isset($additionalParameters['fingersCrossed'])) {
+            $this->fingersCrossed = $additionalParameters['fingersCrossed'];
+        }
         $this->Redis = new Redis();
         $this->redisConfig = $redisConfig;
         parent::__construct($minimalLevel, $verbose);

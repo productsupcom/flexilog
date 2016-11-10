@@ -52,7 +52,7 @@ Extra Variables:
 	_date: 2015-07-07T16:39:55+02:00
 ```
 
-Or to Graylog: http://***REMOVED***:9000/messages/graylog2_312/23a5e2b0-24b6-11e5-b0b9-001e67b4d4d0 (example might have some other sample data).
+Or to Graylog: http://yourgrayloginstance.com/messages/graylog2_312/23a5e2b0-24b6-11e5-b0b9-001e67b4d4d0 (example might have some other sample data).
 
 
 or PSR-3 compatible:

@@ -14,7 +14,7 @@ class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
 
         $logger = new Logger(
             array('Test' =>
-                $handler = new Handler\GelfHandler('debug', 0, ['server'=>'***REMOVED***'])
+                $handler = new Handler\GelfHandler('debug', 0, ['server'=>null])
             ),
             $logInfo
         );

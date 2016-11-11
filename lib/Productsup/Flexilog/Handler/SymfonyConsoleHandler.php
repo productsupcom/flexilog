@@ -1,6 +1,6 @@
 <?php
 
-namespace Productsup\Handler;
+namespace Productsup\Flexilog\Handler;
 
 use Productsup\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Productsup;
+namespace Productsup\Flexilog;
 
 /**
  * Log information that could be required during the output

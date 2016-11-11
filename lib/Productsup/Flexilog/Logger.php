@@ -1,6 +1,6 @@
 <?php
 
-namespace Productsup;
+namespace Productsup\Flexilog;
 
 /**
  * A PSR-3 compatible Logger that uses Handlers to output to multiple resources at the same time.
@@ -155,7 +155,7 @@ class Logger extends \Psr\Log\AbstractLogger
      */
     public function log($level, $message, array $context = array(), $muted = false)
     {
-        if (!defined('Productsup\Log\LogLevel::'.strtoupper($level))) {
+        if (!defined('Productsup\Flexilog\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
         foreach ($this->handlers as $handler) {
@@ -176,7 +176,7 @@ class Logger extends \Psr\Log\AbstractLogger
     {
         if (!isset($level)) {
             $level = Log\LogLevel::NOTICE;
-        } elseif (!defined('Productsup\Log\LogLevel::'.strtoupper($level))) {
+        } elseif (!defined('Productsup\Flexilog\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
 

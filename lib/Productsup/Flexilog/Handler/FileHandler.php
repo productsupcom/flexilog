@@ -1,6 +1,6 @@
 <?php
 
-namespace Productsup\Handler;
+namespace Productsup\Flexilog\Handler;
 
 use League;
 

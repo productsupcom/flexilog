@@ -15,7 +15,7 @@
         "victorjonsson/markdowndocs": "dev-master"
     },
     "autoload": {
-        "psr-4": {"Productsup\\": "lib/Productsup"}
+        "psr-4": {"Productsup\\Flexilog\\": "lib/"}
     },
     "repositories": [
         {

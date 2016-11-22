@@ -1,6 +1,8 @@
 <?php
 
-namespace Productsup;
+use Productsup\Flexilog\Logger;
+use Productsup\Flexilog\LogInfo;
+use Productsup\Flexilog\Handler;
 
 class LoggerSpecTest extends \Psr\Log\Test\LoggerInterfaceTest
 {

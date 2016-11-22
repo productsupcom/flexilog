@@ -1,6 +1,6 @@
 <?php
 
-namespace Productsup\Handler;
+namespace Productsup\Flexilog\Handler;
 
 /**
  * Output to an internal array for PSR-3 compatibility testing

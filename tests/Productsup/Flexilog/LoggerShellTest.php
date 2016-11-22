@@ -1,8 +1,10 @@
 <?php
 
-namespace Productsup;
+use Productsup\Flexilog\Logger;
+use Productsup\Flexilog\LogInfo;
+use Productsup\Flexilog\Handler;
 
-class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
+class LoggerShellTest extends \Psr\Log\Test\LoggerInterfaceTest
 {
     private $handler = null;
 
@@ -13,7 +15,7 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
         $logInfo->process = 'somepid';
 
         $logger = new Logger(array('Test' =>
-            $handler = new Handler\FileHandler('trace', 0, ['filename' => '/Users/twisted/productsup/logger/test.log']),
+            $handler = new Handler\ShellHandler('trace', 2),
         ), $logInfo);
         $this->handler = $handler;
         return $logger;
@@ -21,7 +23,8 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
 
     function getLogs()
     {
-        return $this->handler->logs;
+        $logs = $this->handler->logs;
+        return $logs;
     }
 
     function testFullMessage()
@@ -36,5 +39,8 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
         );
         $logger->message('default message', $context);
         $logger->message('critical message', $context, 'critical');
+        $logger->message('trace message', $context, 'trace');
+
+        $logger->message('muted message', $context, 'alert', true);
     }
 }

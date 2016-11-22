@@ -1,6 +1,6 @@
 <?php
 
-namespace Productsup\Handler;
+namespace Productsup\Flexilog\Handler;
 
 /**
  * Abstract Handler to simplify the implementation of a Handler Interface
@@ -49,11 +49,11 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * Set the Logger for the Handler
      *
-     * @param \Productsup\Logger $logger
+     * @param \Productsup\Flexilog\Logger $logger
      *
      * @return HandlerInterface $this
      */
-    public function setLogger(\Productsup\Logger $logger)
+    public function setLogger(\Productsup\Flexilog\Logger $logger)
     {
         $this->logger = $logger;
 

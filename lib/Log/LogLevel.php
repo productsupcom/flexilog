@@ -1,6 +1,6 @@
 <?php
 
-namespace Productsup\Log;
+namespace Productsup\Flexilog\Log;
 
 class LogLevel extends \Psr\Log\LogLevel
 {

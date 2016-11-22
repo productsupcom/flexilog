@@ -1,8 +1,10 @@
 <?php
 
-namespace Productsup;
+use Productsup\Flexilog\Logger;
+use Productsup\Flexilog\LogInfo;
+use Productsup\Flexilog\Handler;
 
-class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
+class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
 {
     private $handler = null;
 
@@ -12,8 +14,13 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
         $logInfo->site = 397;
         $logInfo->process = 'somepid';
 
-        $logger = new Logger(array(), $logInfo);
-        $this->handler = $logger->getHandler($logger->getHandlerNames()[0]);
+        $logger = new Logger(
+            array('Test' =>
+                $handler = new Handler\GelfHandler('debug', 0, ['server'=>'127.0.0.1'])
+            ),
+            $logInfo
+        );
+        $this->handler = $handler;
         return $logger;
     }
 
@@ -33,7 +40,7 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
             'someArray' => array('yo, sup', 'nm nm', 'a' => array('foo', 'bar' => 'baz')),
             'date' => new \DateTime()
         );
-        $logger->message('default message', $context);
-        $logger->message('critical message', $context, 'critical');
+        $logger->message('fullmessage and foo and exception plus array AND date rfc', $context);
+        $logger->message('trace message', $context, 'trace');
     }
 }

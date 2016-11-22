@@ -24,10 +24,6 @@ class Logger extends \Psr\Log\AbstractLogger
     {
         $this->logInfo = (isset($logInfo)) ? $logInfo : new LogInfo();
 
-        if (empty($handlers)) {
-            $handlers['Gelf'] = new Handler\GelfHandler();
-        }
-
         foreach ($handlers as $handlerName => $handlerObject) {
             $handlerObject->setLogger($this);
             $handlerObject->init();

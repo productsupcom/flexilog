@@ -142,7 +142,7 @@ abstract class AbstractHandler implements HandlerInterface
      */
     public function prepare($level, $message, array $context = array())
     {
-        $context = array_merge($context, get_object_vars($this->logger->logInfo));
+        $context = array_merge($context, $this->logger->logInfo->getData());
         $context['loglevel'] = $level;
         $message = $this->interpolate($message, $context);
         $fullMessage = null;

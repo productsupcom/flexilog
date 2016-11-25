@@ -8,7 +8,7 @@ namespace Productsup\Flexilog;
 class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
-    public $logInfo = null;
+    protected $logInfo = null;
 
     /**
      * Initialise a new Logger with specific Handlers.
@@ -41,6 +41,11 @@ class Logger extends \Psr\Log\AbstractLogger
         $this->logInfo = $logInfo;
 
         return $this;
+    }
+
+    public function getLogInfo()
+    {
+        return $this->logInfo;
     }
 
     /**

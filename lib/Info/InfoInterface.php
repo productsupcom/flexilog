@@ -8,4 +8,6 @@ interface InfoInterface
     public function setProperty($property, $value);
     public function getProperty($property);
     public function removeProperty($property);
+    public static function getRequiredData();
+    public function validate();
 }

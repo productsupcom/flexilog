@@ -10,11 +10,7 @@ class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
 
     function getLogger()
     {
-        $logInfo = new LogInfo();
-        $logInfo->site = 397;
-        $logInfo->process = 'somepid';
-
-        $logger = new Logger(array(), $logInfo);
+        $logger = new Logger(array());
         $this->handler = $logger->getHandler($logger->getHandlerNames()[0]);
         return $logger;
     }

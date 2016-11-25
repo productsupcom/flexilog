@@ -10,13 +10,9 @@ class LoggerArrayTest extends \Psr\Log\Test\LoggerInterfaceTest
 
     function getLogger()
     {
-        $logInfo = new LogInfo();
-        $logInfo->site = 397;
-        $logInfo->process = 'somepid';
-
         $logger = new Logger(array('Test' =>
             $handler = new Handler\ArrayHandler('trace', 2),
-        ), $logInfo);
+        ));
         $this->handler = $handler;
         return $logger;
     }

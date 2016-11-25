@@ -152,7 +152,7 @@ abstract class AbstractHandler implements HandlerInterface
         if (isset($context['fullMessage'])) {
             $fullMessage = $context['fullMessage'];
             unset($context['fullMessage']);
-            $fullMessage = $this->interpolate($fullMessage, get_object_vars($this->logger->logInfo));
+            $fullMessage = $this->interpolate($fullMessage, $this->logger->getLogInfo()->getData());
             $fullMessage = $this->interpolate($fullMessage, $context);
         }
 

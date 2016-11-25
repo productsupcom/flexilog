@@ -1,21 +1,27 @@
 # Logger
 
 ```php
-// the logInfo object is optional to pass
-$logInfo = new LogInfo();
-$logInfo->site = 397;
-$logInfo->process = 'somepid';
+<?php
 
-$logger = new Logger(
-    array(
-        'Shell' => new Handler\ShellHandler('debug', 2),
-        'Gelf' => new Handler\GelfHandler()
-    ),
-    $logInfo // optional parameter
-);
+require_once('vendor/autoload.php');
 
-// or can be passed like this
-$logger->setLogInfo($logInfo);
+use Productsup\Flexilog\Logger;
+use Productsup\Flexilog\Info;
+use Productsup\Flexilog\Handler;
+
+// this is optional
+$logInfo = new Info\GenericInfo();
+$logInfo->setRequiredData(['foo']);
+$logInfo->setProperty('foo', 'bar');
+
+// pick a cool handler
+$shellHandler = new Handler\ShellHandler('trace', 2);
+
+// set the Handler and the optional $logInfo
+$logger = new Logger([$shellHandler], $logInfo);
+
+
+$logger->notice('Hello World');
 ```
 
 ```php

@@ -17,7 +17,7 @@ class GelfHandler extends AbstractHandler
         if (!isset($additionalParameters['server'])) {
             throw new \Exception('Server parameter must be set');
         }
-        $port = isset($additionalParameters['port']) ? $additionalParameters['port'] : 12201;
+        $port = isset($additionalParameters['port']) ? $additionalParameters['port'] : Gelf\Transport\UdpTransport::DEFAULT_PORT;
         parent::__construct($minimalLevel, $verbose);
         $this->transport = new Gelf\Transport\UdpTransport(
             $additionalParameters['server'],

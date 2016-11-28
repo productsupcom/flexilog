@@ -6,8 +6,8 @@ use \Productsup\Flexilog\Exception\InfoException;
 
 abstract class AbstractInfo implements InfoInterface
 {
-    private $data = [];
     protected static $requiredData = [];
+    private $data = [];
 
     // PHP gives a Notice when setting a property that doesn't exist
     // this is usually ignored by most production servers
@@ -66,13 +66,9 @@ abstract class AbstractInfo implements InfoInterface
         return $this->data;
     }
 
-    public function setRequiredData(array $requiredData)
+    public function setRequiredData(array $data)
     {
-        if (count(static::$requiredData) !== 0) {
-            throw new InfoException(sprintf('Required Data is already set for class %s. Extend it if you want require more.', get_class($this)));
-        }
-
-        self::$requiredData = $requiredData;
+        self::$requiredData = array_unique(array_merge(self::$requiredData, $data));
 
         return $this;
     }
@@ -80,8 +76,9 @@ abstract class AbstractInfo implements InfoInterface
     public static function getRequiredData()
     {
         if ($parent = get_parent_class(get_called_class())) {
-            return array_merge($parent::getrequiredData(), static::$requiredData);
+            return array_unique(array_merge($parent::getRequiredData(), static::$requiredData));
         }
+
         return static::$requiredData;
     }
 
@@ -90,5 +87,7 @@ abstract class AbstractInfo implements InfoInterface
         foreach ($this->getrequiredData() as $key) {
             $this->getProperty($key);
         }
+
+        return $this;
     }
 }

@@ -9,6 +9,22 @@ abstract class AbstractInfo implements InfoInterface
     private $data = [];
     protected static $requiredData = [];
 
+    // PHP gives a Notice when setting a property that doesn't exist
+    // this is usually ignored by most production servers
+    // and causes long unknown debugging sessions
+    public function __set($property, $value)
+    {
+        if (is_callable($this, $property)) {
+            return $this->${property}($value);
+        }
+
+        if (!property_exists($this, $property)) {
+            throw new InfoException(sprintf('Class property `%s` does not exist', $property));
+        }
+
+        $this->${property} = $value;
+    }
+
     public function setProperty($property, $value, $internal = false)
     {
         if (!$internal) {

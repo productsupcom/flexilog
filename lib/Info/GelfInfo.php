@@ -4,7 +4,8 @@ namespace Productsup\Flexilog\Info;
 
 class GelfInfo extends AbstractInfo
 {
-    protected static $RequiredData = ['facility', 'host'];
+    const REQUIRED_DATA = ['facility', 'host'];
+
     /**
      * @var string $facility the Facility that is being Logged from
      */

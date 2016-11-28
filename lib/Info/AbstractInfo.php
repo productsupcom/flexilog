@@ -14,12 +14,6 @@ abstract class AbstractInfo implements InfoInterface
     // and causes long unknown debugging sessions
     public function __set($property, $value)
     {
-        // if the user calls e.g. $this->setFoo() and it exists, it should call that
-        // instead of going into this __set method
-        if (is_callable($this, $property)) {
-            return $this->${property}($value);
-        }
-
         // if the user does $this->foo which doesn't exist as a class property
         // throw an Exception
         if (!property_exists($this, $property)) {

@@ -39,7 +39,7 @@ abstract class AbstractInfo implements InfoInterface
 
     public function setRequiredData(array $data)
     {
-        self::$requiredData = array_unique(array_merge($self::$requiredData, $data));
+        self::$requiredData = array_unique(array_merge(self::$requiredData, $data));
 
         return $this;
     }

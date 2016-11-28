@@ -4,14 +4,11 @@ namespace Productsup\Flexilog\Info;
 
 abstract class AbstractInfo implements InfoInterface
 {
-    const REQUIRED_DATA = [];
     protected static $requiredData = [];
-
     private $data = [];
 
     public function setProperty($property, $value)
     {
-        # so it's forbidden to overwrite a setting after inital setup?
         if (!isset($this->data[$property])) {
             $this->data[$property] = $value;
         }
@@ -31,6 +28,8 @@ abstract class AbstractInfo implements InfoInterface
     public function removeProperty($property)
     {
         unset($this->data[$property]);
+
+        return $this;
     }
 
     public function getData()
@@ -40,16 +39,18 @@ abstract class AbstractInfo implements InfoInterface
 
     public function setRequiredData(array $data)
     {
-        self::$requiredData = $data;
+        self::$requiredData = array_unique(array_merge($self::$requiredData, $data));
+
+        return $this;
     }
 
     public static function getRequiredData()
     {
         if ($parent = get_parent_class(get_called_class())) {
-            return array_merge($parent::getRequiredData(), static::REQUIRED_DATA, static::$requiredData);
+            return array_unique(array_merge($parent::getRequiredData(), static::$requiredData));
         }
 
-        return array_merge(static::REQUIRED_DATA, static::$requiredData);
+        return static::$requiredData;
     }
 
     public function validate()
@@ -57,5 +58,7 @@ abstract class AbstractInfo implements InfoInterface
         foreach ($this->getRequiredData() as $key) {
             $this->getProperty($key);
         }
+
+        return $this;
     }
 }

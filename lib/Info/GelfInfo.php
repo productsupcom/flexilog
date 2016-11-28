@@ -11,7 +11,7 @@ class GelfInfo extends AbstractInfo
      */
     public function setFacility($facility)
     {
-        $this->setProperty('facility', $facility, true);
+        $this->setInternalProperty('facility', $facility);
 
         return $this;
     }
@@ -21,7 +21,7 @@ class GelfInfo extends AbstractInfo
      */
     public function setHost($host)
     {
-        $this->setProperty('host', $host, true);
+        $this->setInternalProperty('host', $host);
 
         return $this;
     }

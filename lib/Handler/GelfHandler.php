@@ -3,6 +3,7 @@
 namespace Productsup\Flexilog\Handler;
 
 use Gelf;
+use \Productsup\Flexilog\Exception\HandlerException;
 
 /**
  * Ouput to a Graylog server
@@ -15,7 +16,7 @@ class GelfHandler extends AbstractHandler
     public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
     {
         if (!isset($additionalParameters['server'])) {
-            throw new \Exception('Server parameter must be set');
+            throw new HandlerException('Server parameter must be set inside the $additionalParameters');
         }
         $port = isset($additionalParameters['port']) ? $additionalParameters['port'] : Gelf\Transport\UdpTransport::DEFAULT_PORT;
         parent::__construct($minimalLevel, $verbose);

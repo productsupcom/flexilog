@@ -25,17 +25,21 @@ abstract class AbstractInfo implements InfoInterface
         $this->${property} = $value;
     }
 
-    public function setProperty($property, $value, $internal = false)
+    public function setProperty($property, $value)
     {
-        if (!$internal) {
-            $method = 'set'.ucfirst($property);
-            if (is_callable(array($this, $method), false)) {
-                $this->{$method}($value);
-            }
+        $method = 'set'.ucfirst($property);
+        if (is_callable(array($this, $method), false)) {
+            $this->{$method}($value);
         }
-        if (!isset($this->data[$property])) {
-            $this->data[$property] = $value;
-        }
+
+        $this->data[$property] = $value;
+
+        return $this;
+    }
+
+    protected function setInternalProperty($property, $value)
+    {
+        $this->data[$property] = $value;
 
         return $this;
     }

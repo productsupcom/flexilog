@@ -88,7 +88,7 @@ abstract class AbstractInfo implements InfoInterface
 
     public function validate()
     {
-        foreach ($this->getrequiredData() as $key) {
+        foreach ($this->getRequiredData() as $key) {
             $this->getProperty($key);
         }
 

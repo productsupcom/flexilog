@@ -119,7 +119,7 @@ abstract class AbstractHandler implements HandlerInterface
             }
 
             // clean empty values
-            if (empty($contextObject) && $contextObject !== 0) {
+            if (empty($contextObject) && (string) $contextObject !== '0') {
                 unset($context[$contextKey]);
             }
         }

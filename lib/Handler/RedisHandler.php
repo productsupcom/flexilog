@@ -13,7 +13,7 @@ class RedisHandler extends AbstractHandler
     private $redisConfig = array();
     private $fingersCrossed = false;
 
-    public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
+    public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!class_exists('Redis')) {
             throw new \Exception('Class Redis is not found');

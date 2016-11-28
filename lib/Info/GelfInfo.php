@@ -4,14 +4,14 @@ namespace Productsup\Flexilog\Info;
 
 class GelfInfo extends AbstractInfo
 {
-    protected static $requiredData = ['facility', 'host'];
+    protected static $requiredData = ['host'];
 
     /**
      * @var string $facility the Facility that is being Logged from
      */
     public function setFacility($facility)
     {
-        $this->setProperty('facility', $facility);
+        $this->setInternalProperty('facility', $facility);
 
         return $this;
     }
@@ -21,7 +21,7 @@ class GelfInfo extends AbstractInfo
      */
     public function setHost($host)
     {
-        $this->setProperty('host', $host);
+        $this->setInternalProperty('host', $host);
 
         return $this;
     }

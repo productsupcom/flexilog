@@ -11,7 +11,7 @@ class FileHandler extends AbstractHandler
 {
     private $handle = null;
 
-    public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
+    public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!isset($additionalParameters['filename'])) {
             throw new \Exception('Filename parameter must be set');

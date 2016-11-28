@@ -2,16 +2,43 @@
 
 namespace Productsup\Flexilog\Info;
 
+use \Productsup\Flexilog\Exception\InfoException;
+
 abstract class AbstractInfo implements InfoInterface
 {
     protected static $requiredData = [];
     private $data = [];
 
+    // PHP gives a Notice when setting a property that doesn't exist
+    // this is usually ignored by most production servers
+    // and causes long unknown debugging sessions
+    public function __set($property, $value)
+    {
+        // if the user does $this->foo which doesn't exist as a class property
+        // throw an Exception
+        if (!property_exists($this, $property)) {
+            throw new InfoException(sprintf('Class property `%s` does not exist', $property));
+        }
+
+        // in all other cases, set the class property.
+        $this->${property} = $value;
+    }
+
     public function setProperty($property, $value)
     {
-        if (!isset($this->data[$property])) {
-            $this->data[$property] = $value;
+        $method = 'set'.ucfirst($property);
+        if (is_callable(array($this, $method), false)) {
+            $this->{$method}($value);
         }
+
+        $this->data[$property] = $value;
+
+        return $this;
+    }
+
+    protected function setInternalProperty($property, $value)
+    {
+        $this->data[$property] = $value;
 
         return $this;
     }
@@ -22,7 +49,12 @@ abstract class AbstractInfo implements InfoInterface
             return $this->data[$property];
         }
 
-        throw new \Productsup\Flexilog\Exception\InfoException(sprintf('Property `%s` is not set.', $property));
+        throw new InfoException(sprintf('Property `%s` is not set.', $property));
+    }
+
+    public function hasProperty($property)
+    {
+        return isset($this->data[$property]);
     }
 
     public function removeProperty($property)

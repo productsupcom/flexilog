@@ -21,7 +21,7 @@ abstract class AbstractInfo implements InfoInterface
         }
 
         // in all other cases, set the class property.
-        $this->${property} = $value;
+        $this->{$property} = $value;
     }
 
     public function setProperty($property, $value)

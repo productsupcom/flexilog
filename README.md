@@ -10,6 +10,11 @@ use Productsup\Flexilog\Info;
 use Productsup\Flexilog\Handler;
 
 // this is optional
+// a Info class allows you to set certain properties that you always
+// want to include in your Log output (e.g. Gelf or Shell)
+// this is an expanditure to the `$context`.
+// You can define specific requiredData for the Info so you can enforce
+// certain properties to be available.
 $logInfo = new Info\GenericInfo();
 $logInfo->setRequiredData(['foo']);
 $logInfo->setProperty('foo', 'bar');

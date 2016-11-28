@@ -13,7 +13,7 @@ class GelfHandler extends AbstractHandler
     private $transport = null;
     private $publisher = null;
 
-    public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
+    public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!isset($additionalParameters['server'])) {
             throw new HandlerException('Server parameter must be set inside the $additionalParameters');

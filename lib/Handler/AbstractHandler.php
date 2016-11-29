@@ -119,7 +119,7 @@ abstract class AbstractHandler implements HandlerInterface
             }
 
             // clean empty values
-            if (empty($contextObject)) {
+            if (empty($contextObject) && (string) $contextObject !== '0') {
                 unset($context[$contextKey]);
             }
         }
@@ -142,20 +142,22 @@ abstract class AbstractHandler implements HandlerInterface
      */
     public function prepare($level, $message, array $context = array())
     {
-        $context = array_merge($context, get_object_vars($this->logger->logInfo));
+        $logInfo = $this->logger->getLogInfo();
+        $logInfo->validate();
+        $context = array_merge($context, $logInfo->getData());
         $context['loglevel'] = $level;
+        $context = $this->prepareContext($context);
         $message = $this->interpolate($message, $context);
         $fullMessage = null;
+        $splitFullMessage = array(null);
 
         if (isset($context['fullMessage'])) {
             $fullMessage = $context['fullMessage'];
             unset($context['fullMessage']);
-            $fullMessage = $this->interpolate($fullMessage, get_object_vars($this->logger->logInfo));
+            $fullMessage = $this->interpolate($fullMessage, $this->logger->getLogInfo()->getData());
             $fullMessage = $this->interpolate($fullMessage, $context);
+            $splitFullMessage = $this->splitMessage($fullMessage);
         }
-
-        $context = $this->prepareContext($context);
-        $splitFullMessage = $this->splitMessage($fullMessage);
 
         return array($message, $splitFullMessage, $context);
     }

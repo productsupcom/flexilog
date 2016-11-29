@@ -1,7 +1,7 @@
 <?php
 
 use Productsup\Flexilog\Logger;
-use Productsup\Flexilog\LogInfo;
+use Productsup\Flexilog\Info;
 use Productsup\Flexilog\Handler;
 
 class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
@@ -10,15 +10,12 @@ class LoggerGelfTest extends \Psr\Log\Test\LoggerInterfaceTest
 
     function getLogger()
     {
-        $logInfo = new LogInfo();
-        $logInfo->site = 397;
-        $logInfo->process = 'somepid';
-
+        $logInfo = new Info\GelfInfo();
+        $logInfo->setFacility('test');
         $logger = new Logger(
             array('Test' =>
                 $handler = new Handler\GelfHandler('debug', 0, ['server'=>'127.0.0.1'])
-            ),
-            $logInfo
+            )
         );
         $this->handler = $handler;
         return $logger;

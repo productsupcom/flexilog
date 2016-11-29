@@ -8,7 +8,7 @@ namespace Productsup\Flexilog;
 class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
-    public $logInfo = null;
+    protected $logInfo = null;
 
     /**
      * Initialise a new Logger with specific Handlers.
@@ -20,9 +20,9 @@ class Logger extends \Psr\Log\AbstractLogger
      *      @var Handler\HandlerInterface Handler Interface
      * @param LogInfo $logInfo
      */
-    public function __construct(array $handlers = array(), LogInfo $logInfo = null)
+    public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null)
     {
-        $this->logInfo = (isset($logInfo)) ? $logInfo : new LogInfo();
+        $this->logInfo = (isset($logInfo)) ? $logInfo : new Info\GenericInfo();
 
         foreach ($handlers as $handlerName => $handlerObject) {
             $handlerObject->setLogger($this);
@@ -32,43 +32,20 @@ class Logger extends \Psr\Log\AbstractLogger
     }
 
     /**
-     * @param LogInfo $logInfo
+     * @param Info\InfoInterface $logInfo
      *
      * @return Logger $this
      */
-    public function setLogInfo(LogInfo $logInfo)
+    public function setLogInfo(Info\InfoInterface $logInfo)
     {
         $this->logInfo = $logInfo;
 
         return $this;
     }
 
-    /**
-     * Set the Site ID for the LogInfo
-     *
-     * @param integer $siteId the Site ID
-     *
-     * @return Logger $this
-     */
-    public function setSiteId($siteId)
+    public function getLogInfo()
     {
-        $this->logInfo->siteId = $siteId;
-
-        return $this;
-    }
-
-    /**
-     * Set the Process ID for the LogInfo
-     *
-     * @param string $pid the Process ID
-     *
-     * @return Logger $this
-     */
-    public function setProcessId($pid)
-    {
-        $this->logInfo->pid = $pid;
-
-        return $this;
+        return $this->logInfo;
     }
 
     /**

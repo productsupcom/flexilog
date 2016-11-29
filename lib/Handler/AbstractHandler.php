@@ -28,13 +28,13 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * Construct the Handler, optionally with a minimal logging level
      *
-     * @param \Psr\LogLevel $minimalLevel the minimal severity of the LogLevel to start logging with
+     * @param string $minimalLevel the minimal severity of the LogLevel to start logging with
      * @param integer $verbose the Verbosity of the Log
      */
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         $this->verbose = $verbose;
-        if (isset(self::LOG_LEVELS[$minimalLevel])) {
+        if (array_key_exists($minimalLevel, self::LOG_LEVELS)) {
             $this->minLevel = self::LOG_LEVELS[$minimalLevel];
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Productsup\Flexilog\Handler;
 
-use Productsup\Log\LogLevel;
+use Productsup\Flexilog\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

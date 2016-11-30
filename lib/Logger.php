@@ -14,11 +14,11 @@ class Logger extends \Psr\Log\AbstractLogger
      * Initialise a new Logger with specific Handlers.
      * If no Handler is defined a default one will be initialized (Handler\GelfHandler)
      *
-     * @param array $handlers Key/Value array where the Key is the Handler name
+     * @param    array   $handlers Key/Value array where the Key is the Handler name and the object is an initialized Handler Interface
      * and the object is an initialized Handler Interface
      *      @property string Handler name
-     *      @var Handler\HandlerInterface Handler Interface
-     * @param LogInfo $logInfo
+     *      @var      Handler\HandlerInterface Handler Interface
+     * @param    LogInfo $logInfo
      */
     public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null)
     {
@@ -51,8 +51,8 @@ class Logger extends \Psr\Log\AbstractLogger
     /**
      * Add a new Handler to the Logger
      *
-     * @param string $handlerName Handler Name
-     * @param Handler\HandlerInterface $handler Initialized Handler Interface
+     * @param string                   $handlerName Handler Name
+     * @param Handler\HandlerInterface $handler     Initialized Handler Interface
      *
      * @return Logger $this
      */
@@ -109,8 +109,8 @@ class Logger extends \Psr\Log\AbstractLogger
      * Detailed trace information.
      * Outputs as DEBUG
      *
-     * @param string $message
-     * @param array $context
+     * @param  string $message
+     * @param  array  $context
      * @return null
      */
     public function trace($message, array $context = array())
@@ -121,9 +121,9 @@ class Logger extends \Psr\Log\AbstractLogger
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed $level
-     * @param string $message
-     * @param array $context
+     * @param  mixed  $level
+     * @param  string $message
+     * @param  array  $context
      * @return null
      */
     public function log($level, $message, array $context = array(), $muted = false)
@@ -140,9 +140,9 @@ class Logger extends \Psr\Log\AbstractLogger
      * Logs with an arbitrary level.
      * Convenience method, if no level is provided, Psr\Log\LogLevel::NOTICE will be used.
      *
-     * @param mixed $level
-     * @param string $message
-     * @param array $context
+     * @param  mixed  $level
+     * @param  string $message
+     * @param  array  $context
      * @return null
      */
     public function message($message, array $context = array(), $level = null, $muted = false)

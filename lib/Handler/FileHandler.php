@@ -18,7 +18,7 @@ class FileHandler extends AbstractHandler
         }
         $filename = $additionalParameters['filename'];
         parent::__construct($minimalLevel, $verbose);
-        if ((!file_exists($filename) && file_put_contents($filename,'') === false) ||!is_writable($filename)) {
+        if ((!file_exists($filename) && file_put_contents($filename, '') === false) ||!is_writable($filename)) {
             throw new \Exception('No write permission on file:'.$filename);
         }
         $this->handle = fopen($filename, 'a');
@@ -60,7 +60,7 @@ class FileHandler extends AbstractHandler
 
     public function writeToFile($line)
     {
-        if (fwrite($this->handle, $line) === FALSE) {
+        if (fwrite($this->handle, $line) === false) {
             throw new \Exception('Cannot write to file: '.$this->handle);
         }
     }

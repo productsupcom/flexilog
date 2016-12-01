@@ -9,10 +9,13 @@ use Redis;
  */
 class RedisHandler extends AbstractHandler
 {
-    private $Redis = null;
+    private $redis = null;
     private $redisConfig = array();
     private $fingersCrossed = false;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!class_exists('Redis')) {
@@ -28,14 +31,20 @@ class RedisHandler extends AbstractHandler
         if (isset($additionalParameters['fingersCrossed'])) {
             $this->fingersCrossed = $additionalParameters['fingersCrossed'];
         }
-        $this->Redis = new Redis();
+        $this->redis = new Redis();
         $this->redisConfig = $redisConfig;
         parent::__construct($minimalLevel, $verbose);
     }
 
+    /**
+     * Publishes the log to Redis
+     *
+     * @param string $channelName the Redis channelname to publish to
+     * @param string $lineValue   the log message to publish
+     */
     public function publishLine($channelName, $lineValue)
     {
-        if (!$this->Redis->connect($this->redisConfig['host'], $this->redisConfig['port'])) {
+        if (!$this->redis->connect($this->redisConfig['host'], $this->redisConfig['port'])) {
             if ($this->fingersCrossed) {
                 return;
             }
@@ -44,13 +53,16 @@ class RedisHandler extends AbstractHandler
         }
 
         if (isset($this->redisConfig['password'])) {
-            $this->Redis->auth($this->redisConfig['password']);
+            $this->redis->auth($this->redisConfig['password']);
         }
 
-        $this->Redis->publish($channelName, $lineValue);
-        $this->Redis->close();
+        $this->redis->publish($channelName, $lineValue);
+        $this->redis->close();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         $line = sprintf('%s: %s'.PHP_EOL, strtoupper($level), $message);
@@ -61,7 +73,7 @@ class RedisHandler extends AbstractHandler
             'type'    => $level,
             'message' => $message,
             'process' => getenv('PRODUCTSUP_PID'),
-            'host'    => gethostname()
+            'host'    => gethostname(),
         );
 
         $lineValue = json_encode($line).PHP_EOL;

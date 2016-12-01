@@ -2,6 +2,9 @@
 
 namespace Productsup\Flexilog\Handler;
 
+/**
+ * Handler Interface for the Flexilog endpoint handlers
+ */
 interface HandlerInterface
 {
 

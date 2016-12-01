@@ -4,6 +4,11 @@ namespace Productsup\Flexilog;
 
 /**
  * A PSR-3 compatible Logger that uses Handlers to output to multiple resources at the same time.
+ *
+ * @package Flexilog\Logger
+ * @author  Productsup GmbH
+ * @author  Yorick Terweijden <yt@productsup.com>
+ * @license https://opensource.org/licenses/MIT MIT
  */
 class Logger extends \Psr\Log\AbstractLogger
 {
@@ -16,8 +21,8 @@ class Logger extends \Psr\Log\AbstractLogger
      *
      * @param    array   $handlers Key/Value array where the Key is the Handler name and the object is an initialized Handler Interface
      * and the object is an initialized Handler Interface
-     *      @property string Handler name
-     *      @var      Handler\HandlerInterface Handler Interface
+     * @property string Handler name
+     * @var      Handler\HandlerInterface Handler Interface
      * @param    LogInfo $logInfo
      */
     public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null)
@@ -43,6 +48,11 @@ class Logger extends \Psr\Log\AbstractLogger
         return $this;
     }
 
+    /**
+     * Get the Info object attached to the Logger
+     *
+     * @return Info\InfoInterface $logInfo the Info Object
+     */
     public function getLogInfo()
     {
         return $this->logInfo;
@@ -51,8 +61,8 @@ class Logger extends \Psr\Log\AbstractLogger
     /**
      * Add a new Handler to the Logger
      *
-     * @param string                   $handlerName Handler Name
-     * @param Handler\HandlerInterface $handler     Initialized Handler Interface
+     * @param string                   $handlerName   Handler Name
+     * @param Handler\HandlerInterface $handlerObject Initialized Handler Interface
      *
      * @return Logger $this
      */
@@ -121,9 +131,11 @@ class Logger extends \Psr\Log\AbstractLogger
     /**
      * Logs with an arbitrary level.
      *
-     * @param  mixed  $level
-     * @param  string $message
-     * @param  array  $context
+     * @param  mixed   $level
+     * @param  string  $message
+     * @param  array   $context
+     * @param  boolean $muted   mutes the messages to the Handler
+     *
      * @return null
      */
     public function log($level, $message, array $context = array(), $muted = false)
@@ -140,9 +152,11 @@ class Logger extends \Psr\Log\AbstractLogger
      * Logs with an arbitrary level.
      * Convenience method, if no level is provided, Psr\Log\LogLevel::NOTICE will be used.
      *
-     * @param  mixed  $level
-     * @param  string $message
-     * @param  array  $context
+     * @param  string  $message
+     * @param  array   $context
+     * @param  mixed   $level
+     * @param  boolean $muted   mutes the messages to the Handler
+     *
      * @return null
      */
     public function message($message, array $context = array(), $level = null, $muted = false)

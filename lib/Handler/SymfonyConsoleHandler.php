@@ -37,6 +37,9 @@ class SymfonyConsoleHandler extends AbstractHandler
     // needed to test for PSR-3 compatibility
     public $logs = null;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
     {
         if (!isset($additionalParameters['outputInterface'])) {
@@ -46,6 +49,9 @@ class SymfonyConsoleHandler extends AbstractHandler
         $this->outputInterface = $additionalParameters['outputInterface'];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         $i = 1;

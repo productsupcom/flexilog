@@ -77,7 +77,7 @@ abstract class AbstractHandler implements HandlerInterface
                 $val = (string) $val;
             }
             if (is_string($val)) {
-                $replace['{' . $key . '}'] = $val;
+                $replace['{'.$key.'}'] = $val;
             }
         }
 
@@ -93,7 +93,7 @@ abstract class AbstractHandler implements HandlerInterface
      *
      * @return array $conext Cleaned context
      */
-    function prepareContext(array $context)
+    public function prepareContext(array $context)
     {
         // cleanup any thrown exceptions
         foreach ($context as $contextKey => $contextObject) {
@@ -198,6 +198,8 @@ abstract class AbstractHandler implements HandlerInterface
      * @param \Psr\LogLevel $level
      * @param string        $message Message to Log with Placeholders, defined by {curly}-braces.
      * @param array         $context Key/Value array with properties for the Placeholders.
+     * @param boolean       $muted   Mutes the to be processed message, used when you set $verbosity
+     *                               of the Handler to -1.
      *
      * @return null
      */

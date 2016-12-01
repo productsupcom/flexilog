@@ -28,8 +28,8 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * Construct the Handler, optionally with a minimal logging level
      *
-     * @param string $minimalLevel the minimal severity of the LogLevel to start logging with
-     * @param integer $verbose the Verbosity of the Log
+     * @param string  $minimalLevel the minimal severity of the LogLevel to start logging with
+     * @param integer $verbose      the Verbosity of the Log
      */
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
@@ -64,7 +64,7 @@ abstract class AbstractHandler implements HandlerInterface
      * Interpolates context values into the message placeholders.
      *
      * @param string $message Message to Log with Placeholders, defined by {curly}-braces.
-     * @param array $context Key/Value array with properties for the Placeholders.
+     * @param array  $context Key/Value array with properties for the Placeholders.
      *
      * @return string $message Message with Placeholders replaced by the context.
      */
@@ -77,7 +77,7 @@ abstract class AbstractHandler implements HandlerInterface
                 $val = (string) $val;
             }
             if (is_string($val)) {
-                $replace['{' . $key . '}'] = $val;
+                $replace['{'.$key.'}'] = $val;
             }
         }
 
@@ -93,7 +93,7 @@ abstract class AbstractHandler implements HandlerInterface
      *
      * @return array $conext Cleaned context
      */
-    function prepareContext(array $context)
+    public function prepareContext(array $context)
     {
         // cleanup any thrown exceptions
         foreach ($context as $contextKey => $contextObject) {
@@ -131,13 +131,13 @@ abstract class AbstractHandler implements HandlerInterface
      * Prepare the Log Message before writing
      *
      * @param \Psr\LogLevel $level
-     * @param string $message Message to Log with Placeholders, defined by {curly}-braces.
-     * @param array $context Key/Value array with properties for the Placeholders.
+     * @param string        $message Message to Log with Placeholders, defined by {curly}-braces.
+     * @param array         $context Key/Value array with properties for the Placeholders.
      *
      * @return array {
-     *      @var $message
-     *      @var $splitFullMessage
-     *      @var $context
+     *      @var    $message
+     *      @var    $splitFullMessage
+     *      @var    $context
      * }
      */
     public function prepare($level, $message, array $context = array())
@@ -165,8 +165,8 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * Split the Full Message into chunks before writing it to the Logger
      *
-     * @param string $fullMessage
-     * @param integer $size Defaults to 220000bytes
+     * @param string  $fullMessage
+     * @param integer $size        Defaults to 220000bytes
      *
      * @return array $splitFullMessage
      */
@@ -175,7 +175,7 @@ abstract class AbstractHandler implements HandlerInterface
         $splitFullMessage = array(null);
         if (isset($fullMessage)) {
             if (is_array($fullMessage)) {
-               $fullMessage = print_r($fullMessage, true);
+                $fullMessage = print_r($fullMessage, true);
             }
 
             /* Because of the limit set by the GELF spec on the amount of chunks available
@@ -196,8 +196,10 @@ abstract class AbstractHandler implements HandlerInterface
      * Process the Logged message
      *
      * @param \Psr\LogLevel $level
-     * @param string $message Message to Log with Placeholders, defined by {curly}-braces.
-     * @param array $context Key/Value array with properties for the Placeholders.
+     * @param string        $message Message to Log with Placeholders, defined by {curly}-braces.
+     * @param array         $context Key/Value array with properties for the Placeholders.
+     * @param boolean       $muted   Mutes the to be processed message, used when you set $verbosity
+     *                               of the Handler to -1.
      *
      * @return null
      */

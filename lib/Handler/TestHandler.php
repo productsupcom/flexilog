@@ -9,6 +9,9 @@ class TestHandler extends AbstractHandler
 {
     public $logs = array();
 
+    /**
+     * {@inheritDoc}
+     */
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         // noop;

@@ -9,11 +9,17 @@ class ArrayHandler extends AbstractHandler
 {
     public $array = array();
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         parent::__construct($minimalLevel, $verbose);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         $i = 1;
@@ -28,7 +34,7 @@ class ArrayHandler extends AbstractHandler
             $arr = [
                 'message' => $shortMessageToSend,
                 'level' => $level,
-                'timestamp' => $timestamp
+                'timestamp' => $timestamp,
                 ];
 
 

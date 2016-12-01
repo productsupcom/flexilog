@@ -11,6 +11,11 @@ class FileHandler extends AbstractHandler
 {
     private $handle = null;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param array $additionalParameters Pass an array with the `filename` as a key/value to be used.
+     */
     public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!isset($additionalParameters['filename'])) {
@@ -18,7 +23,7 @@ class FileHandler extends AbstractHandler
         }
         $filename = $additionalParameters['filename'];
         parent::__construct($minimalLevel, $verbose);
-        if ((!file_exists($filename) && file_put_contents($filename,'') === false) ||!is_writable($filename)) {
+        if ((!file_exists($filename) && file_put_contents($filename, '') === false) ||!is_writable($filename)) {
             throw new \Exception('No write permission on file:'.$filename);
         }
         $this->handle = fopen($filename, 'a');
@@ -27,6 +32,9 @@ class FileHandler extends AbstractHandler
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         $i = 1;
@@ -58,9 +66,14 @@ class FileHandler extends AbstractHandler
         }
     }
 
+    /**
+     * Writes the data to a file
+     *
+     * @param string $line The line to write to the file
+     */
     public function writeToFile($line)
     {
-        if (fwrite($this->handle, $line) === FALSE) {
+        if (fwrite($this->handle, $line) === false) {
             throw new \Exception('Cannot write to file: '.$this->handle);
         }
     }

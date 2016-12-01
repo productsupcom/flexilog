@@ -13,6 +13,11 @@ class GelfHandler extends AbstractHandler
     private $transport = null;
     private $publisher = null;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param $additionalParameters array Pass the `server` and `port` as a key/value array
+     */
     public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!isset($additionalParameters['server'])) {
@@ -29,6 +34,9 @@ class GelfHandler extends AbstractHandler
         $this->publisher->addTransport($this->transport);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         if ($message === '') {

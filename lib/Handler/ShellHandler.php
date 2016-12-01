@@ -11,13 +11,19 @@ class ShellHandler extends AbstractHandler
 {
     private $CLImate = null;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct($minimalLevel = 'debug', $verbose = 0)
     {
         parent::__construct($minimalLevel, $verbose);
-        $this->CLImate = new League\CLImate\CLImate;
+        $this->CLImate = new League\CLImate\CLImate();
         $this->CLImate->output->defaultTo('error');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function write($level, $message, $splitFullMessage, array $context = array())
     {
         $i = 1;
@@ -54,6 +60,12 @@ class ShellHandler extends AbstractHandler
         }
     }
 
+    /**
+     * Outputs the data in a verbose manner to the Shell
+     *
+     * @param string $fullMessage the Full Message
+     * @param array  $context     the Context for the Log
+     */
     public function outputVerbose($fullMessage, $context)
     {
         $color = 'cyan';

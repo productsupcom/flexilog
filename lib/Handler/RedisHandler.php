@@ -72,7 +72,6 @@ class RedisHandler extends AbstractHandler
             'time'    => date('H:i:s'),
             'type'    => $level,
             'message' => $message,
-            'process' => getenv('PRODUCTSUP_PID'),
             'host'    => gethostname(),
         );
 

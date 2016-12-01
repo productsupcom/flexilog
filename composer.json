@@ -2,7 +2,7 @@
     "name": "productsupcom/flexilog",
     "type": "library",
     "description": "Flexible PSR-3 Compatible Logger",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": ">=5.6.0",
         "psr/log": "^1.0",

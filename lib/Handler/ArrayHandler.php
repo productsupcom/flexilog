@@ -20,7 +20,7 @@ class ArrayHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, $splitFullMessage, array $context = array())
+    public function write($level, $message, array $splitFullMessage, array $context = array())
     {
         $i = 1;
         foreach ($splitFullMessage as $fullMessage) {

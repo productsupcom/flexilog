@@ -63,7 +63,7 @@ class RedisHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, $splitFullMessage, array $context = array())
+    public function write($level, $message, array $splitFullMessage, array $context = array())
     {
         $line = sprintf('%s: %s'.PHP_EOL, strtoupper($level), $message);
 

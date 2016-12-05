@@ -16,5 +16,5 @@ interface HandlerInterface
      * @param string        $splitFullMessage
      * @param array         $context
      */
-    public function write($level, $message, $splitFullMessage, array $context = array());
+    public function write($level, $message, array $splitFullMessage, array $context = array());
 }

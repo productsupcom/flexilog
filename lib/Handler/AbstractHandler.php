@@ -148,7 +148,6 @@ abstract class AbstractHandler implements HandlerInterface
         $context['loglevel'] = $level;
         $context = $this->prepareContext($context);
         $message = $this->interpolate($message, $context);
-        $fullMessage = null;
         $splitFullMessage = array(null);
 
         if (isset($context['fullMessage'])) {

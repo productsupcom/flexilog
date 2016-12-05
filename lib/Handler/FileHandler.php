@@ -44,7 +44,7 @@ class FileHandler extends AbstractHandler
                 $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
             }
 
-            $line = sprintf('%s %s: %s'.PHP_EOL, date('H:i:s'), strtoupper($level), $message);
+            $line = sprintf('%s %s: %s'.PHP_EOL, date('H:i:s'), strtoupper($level), $shortMessageToSend);
             $this->writeToFile($line);
 
             if ($this->verbose >= 1) {

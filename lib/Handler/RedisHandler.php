@@ -65,8 +65,6 @@ class RedisHandler extends AbstractHandler
      */
     public function write($level, $message, array $splitFullMessage, array $context = array())
     {
-        $line = sprintf('%s: %s'.PHP_EOL, strtoupper($level), $message);
-
         $line = array(
             'date'    => date('Y-m-d'),
             'time'    => date('H:i:s'),

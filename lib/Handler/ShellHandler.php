@@ -33,6 +33,7 @@ class ShellHandler extends AbstractHandler
                 $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
             }
 
+            $color = 'dark_gray';
             if (self::LOG_LEVELS[$level] >= 7) {
                 $color = 'dark_gray';
             } elseif (self::LOG_LEVELS[$level] >= 5) {

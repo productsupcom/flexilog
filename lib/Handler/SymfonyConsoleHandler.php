@@ -62,7 +62,7 @@ class SymfonyConsoleHandler extends AbstractHandler
             }
 
             if ($this->outputInterface->getVerbosity() >= $this->verbosityLevelMap[$level]) {
-                $this->outputInterface->writeln(sprintf('<%1$s>[%2$s] %3$s</%1$s>', $this->formatLevelMap[$level], $level, $this->interpolate($message, $context)));
+                $this->outputInterface->writeln(sprintf('<%1$s>[%2$s] %3$s</%1$s>', $this->formatLevelMap[$level], $level, $this->interpolate($shortMessageToSend, $context)));
             }
 
             $i++;

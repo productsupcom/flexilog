@@ -98,11 +98,4 @@ Outputs
 ```
 
 # Caveats
-The Loginfo has the following properties that are always merged. Thus they are reserved as keywords for the `array $context`.
-
-```
-site
-process
-facility
-host
-```
+Depending on the Info object in use there might be some reserved keywords. Check the Info object you're using for the list of reserved keywords.

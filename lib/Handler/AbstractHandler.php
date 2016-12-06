@@ -97,19 +97,6 @@ abstract class AbstractHandler implements HandlerInterface
     {
         // cleanup any thrown exceptions
         foreach ($context as $contextKey => $contextObject) {
-            if ($contextObject instanceof \Exception) {
-                $context[$contextKey] = $contextObject->__toString();
-            } elseif (is_array($contextObject)) {
-                $context[$contextKey] = json_encode($contextObject, true);
-            } elseif ($contextObject instanceof \DateTime) {
-                $context[$contextKey] = $contextObject->format(\DateTime::RFC3339);
-            } elseif (is_object($contextObject)) {
-                $context[$contextKey] = $contextObject->__toString();
-            } elseif (is_resource($contextObject)) {
-                $context[$contextKey] = get_resource_type($contextObject);
-            }
-
-
             // some reserved keywords
             $reserved = array('date');
             if (in_array($contextKey, $reserved)) {
@@ -117,6 +104,20 @@ abstract class AbstractHandler implements HandlerInterface
                 $context['_'.$contextKey] = $context[$contextKey];
                 unset($context[$contextKey]);
             }
+
+            if ($contextObject instanceof \Exception) {
+                $contextObject = $contextObject->__toString();
+            } elseif (is_array($contextObject)) {
+                $contextObject = json_encode($contextObject, true);
+            } elseif ($contextObject instanceof \DateTime) {
+                $contextObject = $contextObject->format(\DateTime::RFC3339);
+            } elseif (is_object($contextObject)) {
+                $contextObject = $contextObject->__toString();
+            } elseif (is_resource($contextObject)) {
+                $contextObject = get_resource_type($contextObject);
+            }
+
+            $context[$contextKey] = $contextObject;
 
             // clean empty values
             if (empty($contextObject) && (string) $contextObject !== '0') {

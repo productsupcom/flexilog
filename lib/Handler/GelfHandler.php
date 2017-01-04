@@ -65,7 +65,7 @@ class GelfHandler extends AbstractHandler
                     if (is_array($contextMessage)) {
                         $contextMessage = print_r($contextMessage, true);
                     }
-                    $gelfMessage->setAdditional($contextKey, $contextMessage);
+                    $gelfMessage->setAdditional($contextKey, substr($contextMessage, 0, 31766));
                 }
             }
 

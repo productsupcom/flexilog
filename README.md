@@ -74,6 +74,15 @@ $logger->critical('critical message', $context);
 
 Check the [generated API docs](API.md) for more info.
 
+# Trace level
+The Flexilog adds one more level lower then `debug`, the `trace` level. To keep it compatible with the `PSR\NullLogger` you need to call it in the following way:
+
+```php
+$logger->log('trace', $message, $context);
+```
+
+The `PSR\NullLogger` will then just ignore it.
+
 ## Symfony Console
 
 ```

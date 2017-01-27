@@ -74,6 +74,25 @@ $logger->critical('critical message', $context);
 
 Check the [generated API docs](API.md) for more info.
 
+# Muting Messages for Handlers
+Sometimes you want to initialise multiple Handlers but not send a message to each. This can be done using the Mute option.
+
+```php
+// initialise a few Handlers, use the default verbosity set in the Handler
+$shellHandler = new Handler\ShellHandler('trace');
+// set the Verbosity to -1, which allows it to be muted
+$arrayHandler = new Handler\ArrayHandler('debug', -1);
+
+$logger = new Logger([$shellHandler, $arrayHandler]);
+
+// now send a message where $muted is set to true
+$logger->log('debug', 'foobar', ['baz'=>'bar'], true);
+```
+
+The result will be that ShellHandler will output the message "foobar", however the ArrayHandler will not receive the message.
+
+This is useful if you always want to log messages to a centralised logging system but the production environment that the client can see doesn't need to see that message.
+
 # Trace level
 The Flexilog adds one more level lower then `debug`, the `trace` level. To keep it compatible with the `PSR\NullLogger` you need to call it in the following way:
 

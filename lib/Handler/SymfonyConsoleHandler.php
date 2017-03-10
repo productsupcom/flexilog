@@ -28,10 +28,10 @@ class SymfonyConsoleHandler extends AbstractHandler
         LogLevel::ALERT => 'error',
         LogLevel::CRITICAL => 'error',
         LogLevel::ERROR => 'error',
-        LogLevel::WARNING => 'info',
+        LogLevel::WARNING  => 'comment',
         LogLevel::DEBUG => 'info',
         LogLevel::INFO => 'info',
-        LogLevel::TRACE => 'fg=gray',
+        LogLevel::TRACE => 'fg=magenta',
     );
 
     // needed to test for PSR-3 compatibility
@@ -58,12 +58,10 @@ class SymfonyConsoleHandler extends AbstractHandler
         foreach ($splitFullMessage as $fullMessage) {
             $shortMessageToSend = $message;
             if (count($splitFullMessage) != 1) {
-                $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
+                $shortMessageToSend = $i . '/' . count($splitFullMessage) . ' ' . $message;
             }
 
-            if ($this->outputInterface->getVerbosity() >= $this->verbosityLevelMap[$level]) {
-                $this->outputInterface->writeln(sprintf('<%1$s>[%2$s] %3$s</%1$s>', $this->formatLevelMap[$level], $level, $this->interpolate($shortMessageToSend, $context)));
-            }
+            $this->outputInterface->writeln(sprintf('%1$s <%2$s>[%3$s] %4$s</%2$s>', date('H:i:s'), $this->formatLevelMap[$level], $level, $this->interpolate($shortMessageToSend, $context)));
 
             $i++;
         }

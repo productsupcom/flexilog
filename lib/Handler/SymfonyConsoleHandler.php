@@ -29,8 +29,9 @@ class SymfonyConsoleHandler extends AbstractHandler
         LogLevel::CRITICAL => 'error',
         LogLevel::ERROR => 'error',
         LogLevel::WARNING => 'info',
-        LogLevel::DEBUG => 'info',
+        LogLevel::NOTICE => 'info',
         LogLevel::INFO => 'info',
+        LogLevel::DEBUG => 'info',
         LogLevel::TRACE => 'fg=gray',
     );
 

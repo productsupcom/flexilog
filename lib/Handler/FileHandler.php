@@ -2,8 +2,6 @@
 
 namespace Productsup\Flexilog\Handler;
 
-use League;
-
 /**
  * Write to a specified File
  */

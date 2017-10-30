@@ -4,6 +4,7 @@ namespace Productsup\Flexilog\Handler;
 
 use Productsup\Flexilog\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 /**
  * Write to the Symfony Console Output
@@ -79,10 +80,10 @@ class SymfonyConsoleHandler extends AbstractHandler
 
     private function getOutputInterface($level)
     {
-        if ($this->formatLevelMap[$level] != 'error') {
-            return $this->outputInterface;
+        if ($this->formatLevelMap[$level] == 'error' && $this->outputInterface instanceof ConsoleOutputInterface) {
+            return $this->outputInterface->getErrorOutput();
         }
 
-        return $this->outputInterface->getErrorOutput();
+        return $this->outputInterface;
     }
 }

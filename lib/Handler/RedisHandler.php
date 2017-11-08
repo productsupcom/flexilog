@@ -9,9 +9,9 @@ use Redis;
  */
 class RedisHandler extends AbstractHandler
 {
-    private $redis = null;
-    private $redisConfig = array();
-    private $fingersCrossed = false;
+    protected $redis = null;
+    protected $redisConfig = array();
+    protected $fingersCrossed = false;
 
     /**
      * {@inheritDoc}

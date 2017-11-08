@@ -3,35 +3,41 @@
 namespace Productsup\Flexilog\Handler;
 
 use Redis;
+use Exception;
 
 /**
  * Publish to a Redis channel
  */
 class RedisHandler extends AbstractHandler
 {
-    private $redis = null;
-    private $redisConfig = array();
-    private $fingersCrossed = false;
+    protected $redis;
+    protected $redisConfig = [];
+    protected $fingersCrossed = false;
 
     /**
      * {@inheritDoc}
      */
-    public function __construct($minimalLevel, $verbose, $additionalParameters = array())
+    public function __construct($minimalLevel, $verbose, $additionalParameters = [])
     {
         if (!class_exists('Redis')) {
-            throw new \Exception('Class Redis is not found');
+            throw new Exception('Class Redis is not found');
         }
+
         if (!isset($additionalParameters['redisConfig'])) {
-            throw new \Exception('Redis configuration has not been provided.');
+            throw new Exception('Redis configuration has not been provided.');
         }
+
         $redisConfig = $additionalParameters['redisConfig'];
+
         if (!isset($redisConfig['channel'])) {
-            throw new \Exception('Redis Channel to Publish to has not been provided');
+            throw new Exception('Redis Channel to Publish to has not been provided');
         }
+
         if (isset($additionalParameters['fingersCrossed'])) {
             $this->fingersCrossed = $additionalParameters['fingersCrossed'];
         }
-        $this->redis = new Redis();
+
+        $this->redis = new Redis;
         $this->redisConfig = $redisConfig;
         parent::__construct($minimalLevel, $verbose);
     }
@@ -49,7 +55,7 @@ class RedisHandler extends AbstractHandler
                 return;
             }
 
-            throw new \Exception('Could not connect to the Redis server.');
+            throw new Exception('Could not connect to the Redis server.');
         }
 
         if (isset($this->redisConfig['password'])) {
@@ -63,17 +69,17 @@ class RedisHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array())
+    public function write($level, $message, array $splitFullMessage, array $context = [])
     {
-        $line = array(
+        $line = [
             'date'    => date('Y-m-d'),
             'time'    => date('H:i:s'),
             'type'    => $level,
             'message' => $message,
             'host'    => gethostname(),
-        );
+        ];
 
-        $lineValue = json_encode($line).PHP_EOL;
+        $lineValue = json_encode($line) . PHP_EOL;
         $this->publishLine($this->redisConfig['channel'], $lineValue);
     }
 }

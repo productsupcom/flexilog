@@ -18,7 +18,8 @@
     },
     "suggest": {
         "graylog2/gelf-php": "Required for GelfHandler, if you want to write to Graylog",
-        "league/climate": "Required for ShellHandler, if you want to write to the Shell using multi-color"
+        "league/climate": "Required for ShellHandler, if you want to write to the Shell using multi-color",
+        "maknz/slack": "Required for SlackHandler, if you want to write to a Slack channel"
     },
     "repositories": [
         {

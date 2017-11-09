@@ -14,6 +14,7 @@ class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
     protected $logInfo = null;
+    private $autoRemove = false;
 
     /**
      * Initialise a new Logger with specific Handlers.
@@ -25,15 +26,25 @@ class Logger extends \Psr\Log\AbstractLogger
      * @var      Handler\HandlerInterface Handler Interface
      * @param    LogInfo $logInfo
      */
-    public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null)
+    public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null, $autoRemove = false)
     {
         $this->logInfo = (isset($logInfo)) ? $logInfo : new Info\GenericInfo();
+        $this->autoRemove = $autoRemove;
 
         foreach ($handlers as $handlerName => $handlerObject) {
+            if (empty($handlerName)) {
+                $handlerName = sha1(get_class($handlerObject) .'\\'. time());
+            }
             $handlerObject->setLogger($this);
             $handlerObject->init();
             $this->addHandler($handlerName, $handlerObject);
         }
+    }
+
+    public function setAutoRemove($autoRemove = false) {
+        $this->autoRemove = $autoRemove;
+
+        return $this;
     }
 
     /**
@@ -143,8 +154,17 @@ class Logger extends \Psr\Log\AbstractLogger
         if (!defined('Productsup\Flexilog\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
-        foreach ($this->handlers as $handler) {
-            $handler->process($level, (string) $message, $context, $muted);
+
+        foreach ($this->handlers as $name => $handler) {
+            try {
+                $handler->process($level, (string) $message, $context, $muted);
+            } catch (Exception\HandlerConnectionException $e) {
+                if ($this->autoRemove) {
+                    $this->removeHandler($name);
+                } else {
+                    throw new Exception\HandlerException('A Handler caused an exception, initialise Flexilog with Autoremove to unset this Handler automatically.', 0, $e);
+                }
+            }
         }
     }
 

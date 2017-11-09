@@ -3,7 +3,7 @@
 namespace Productsup\Flexilog\Handler;
 
 use \Maknz\Slack;
-use \Productsup\Flexilog\Exception\HandlerException;
+use \Productsup\Flexilog\Exception\HandlerConnectionException;
 
 /**
  * Ouput to a Graylog server
@@ -123,7 +123,12 @@ class SlackHandler extends AbstractHandler
             ]);
             $slackMessage->setAttachments($attachments);
 
-            $slackMessage->send();
+
+            try {
+                $slackMessage->send();
+            } catch (\Exception $e) {
+                throw new HandlerConnectionException('Could not send to Slack');
+            }
             $i++;
         }
     }

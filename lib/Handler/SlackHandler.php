@@ -10,7 +10,7 @@ use \Productsup\Flexilog\Exception\HandlerException;
  */
 class SlackHandler extends AbstractHandler
 {
-    private $slack = null;
+    private $slack;
 
     /**
      * {@inheritDoc}

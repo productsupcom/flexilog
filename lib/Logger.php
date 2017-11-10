@@ -14,7 +14,7 @@ class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
     protected $logInfo = null;
-    private $autoRemove = false;
+    public $autoRemove = false;
 
     /**
      * Initialise a new Logger with specific Handlers.
@@ -32,9 +32,6 @@ class Logger extends \Psr\Log\AbstractLogger
         $this->autoRemove = $autoRemove;
 
         foreach ($handlers as $handlerName => $handlerObject) {
-            if (empty($handlerName)) {
-                $handlerName = sha1(get_class($handlerObject) .'\\'. time());
-            }
             $handlerObject->setLogger($this);
             $handlerObject->init();
             $this->addHandler($handlerName, $handlerObject);
@@ -42,7 +39,7 @@ class Logger extends \Psr\Log\AbstractLogger
     }
 
     public function setAutoRemove($autoRemove = false) {
-        $this->autoRemove = $autoRemove;
+        $this->autoRemove = (bool) $autoRemove;
 
         return $this;
     }
@@ -158,7 +155,7 @@ class Logger extends \Psr\Log\AbstractLogger
         foreach ($this->handlers as $name => $handler) {
             try {
                 $handler->process($level, (string) $message, $context, $muted);
-            } catch (Exception\HandlerConnectionException $e) {
+            } catch (Exception\HandlerException $e) {
                 if ($this->autoRemove) {
                     $this->removeHandler($name);
                 } else {

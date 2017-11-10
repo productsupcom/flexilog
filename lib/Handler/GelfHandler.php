@@ -2,8 +2,9 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Exception\HandlerException;
+use Productsup\Flexilog\Exception\HandlerConnectionException;
 use Gelf;
-use \Productsup\Flexilog\Exception\HandlerException;
 
 /**
  * Ouput to a Graylog server
@@ -69,7 +70,11 @@ class GelfHandler extends AbstractHandler
                 }
             }
 
-            $this->publisher->publish($gelfMessage);
+            try {
+                $this->publisher->publish($gelfMessage);
+            } catch (\Exception $e) {
+                throw new HandlerConnectionException('Could not publish to Gelf transport');
+            }
             $i++;
         }
     }

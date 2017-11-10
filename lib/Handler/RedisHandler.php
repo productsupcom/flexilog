@@ -2,6 +2,8 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Exception\HandlerException;
+use Productsup\Flexilog\Exception\HandlerConnectionException;
 use Redis;
 
 /**
@@ -19,14 +21,14 @@ class RedisHandler extends AbstractHandler
     public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!class_exists('Redis')) {
-            throw new \Exception('Class Redis is not found');
+            throw new HandlerException('Class Redis is not found');
         }
         if (!isset($additionalParameters['redisConfig'])) {
-            throw new \Exception('Redis configuration has not been provided.');
+            throw new HandlerException('Redis configuration has not been provided.');
         }
         $redisConfig = $additionalParameters['redisConfig'];
         if (!isset($redisConfig['channel'])) {
-            throw new \Exception('Redis Channel to Publish to has not been provided');
+            throw new HandlerException('Redis Channel to Publish to has not been provided');
         }
         if (isset($additionalParameters['fingersCrossed'])) {
             $this->fingersCrossed = $additionalParameters['fingersCrossed'];
@@ -49,7 +51,7 @@ class RedisHandler extends AbstractHandler
                 return;
             }
 
-            throw new \Exception('Could not connect to the Redis server.');
+            throw new HandlerConnectionException('Could not connect to the Redis server.');
         }
 
         if (isset($this->redisConfig['password'])) {

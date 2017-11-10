@@ -3,6 +3,7 @@
 namespace Productsup\Flexilog\Handler;
 
 use Productsup\Flexilog\Log\LogLevel;
+use Productsup\Flexilog\Exception\HandlerException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
@@ -45,7 +46,7 @@ class SymfonyConsoleHandler extends AbstractHandler
     public function __construct($minimalLevel = 'debug', $verbose = 0, $additionalParameters = array())
     {
         if (!isset($additionalParameters['outputInterface'])) {
-            throw new \Exception('OutputInterface parameter must be set');
+            throw new HandlerException('OutputInterface parameter must be set');
         }
         parent::__construct($minimalLevel, $verbose);
         $this->outputInterface = $additionalParameters['outputInterface'];

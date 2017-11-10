@@ -65,7 +65,7 @@ class RedisHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array())
+    public function write($level, $message, array $context = array())
     {
         $line = array(
             'date'    => date('Y-m-d'),

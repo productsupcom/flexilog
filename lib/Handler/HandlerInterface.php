@@ -13,8 +13,7 @@ interface HandlerInterface
      *
      * @param \Psr\LogLevel $level
      * @param string        $message
-     * @param string        $splitFullMessage
      * @param array         $context
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array());
+    public function write($level, $message, array $context = array());
 }

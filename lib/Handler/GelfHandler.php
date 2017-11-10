@@ -38,10 +38,20 @@ class GelfHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array())
+    public function write($level, $message, array $context = array())
     {
         if ($message === '') {
             return;
+        }
+
+        $splitFullMessage = array(null);
+
+        if (isset($context['fullMessage'])) {
+            $fullMessage = $context['fullMessage'];
+            unset($context['fullMessage']);
+            $fullMessage = $this->interpolate($fullMessage, $this->logger->getLogInfo()->getData());
+            $fullMessage = $this->interpolate($fullMessage, $context);
+            $splitFullMessage = $this->splitMessage($fullMessage);
         }
 
         $level = ($level == 'trace') ? 'debug' : $level;

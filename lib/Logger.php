@@ -18,14 +18,10 @@ class Logger extends \Psr\Log\AbstractLogger
 
     /**
      * Initialise a new Logger with specific Handlers.
-     * If no Handler is defined a default one will be initialized (Handler\GelfHandler)
      *
-     * @param    array   $handlers Key/Value array where the Key is the Handler name and the object is an initialized Handler Interface
-     * and the object is an initialized Handler Interface
-     * @property string Handler name
-     * @var      Handler\HandlerInterface Handler Interface
-     * @var      bool    Defines if a Handler running into an Exception (for whatever reason) should be autoremoved from the Handlers.
-     * @param    LogInfo $logInfo
+     * @param HandlerInterface[] $handlers Key/Value array where the Key is the Handler name and the object is an initialized Handler Interface
+     * @param Info\InfoInterface $logInfo LogInfo object containing additional data
+     * @param bool $autoremove Defines if a Handler running into an Exception (for whatever reason) should be autoremoved from the Handlers.
      */
     public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null, $autoRemove = false)
     {

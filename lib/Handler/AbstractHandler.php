@@ -101,8 +101,10 @@ abstract class AbstractHandler implements HandlerInterface
             $reserved = array('date');
             if (in_array($contextKey, $reserved)) {
                 // prepend with an underscore
-                $context['_'.$contextKey] = $context[$contextKey];
+                $newkey = '_'.$contextKey;
+                $context[$newkey] = $context[$contextKey];
                 unset($context[$contextKey]);
+                $contextKey = $newkey;
             }
 
             if ($contextObject instanceof \Exception) {

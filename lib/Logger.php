@@ -14,7 +14,7 @@ class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
     protected $logInfo = null;
-    public $autoRemove = false;
+    protected $autoRemove = false;
 
     /**
      * Initialise a new Logger with specific Handlers.
@@ -24,6 +24,7 @@ class Logger extends \Psr\Log\AbstractLogger
      * and the object is an initialized Handler Interface
      * @property string Handler name
      * @var      Handler\HandlerInterface Handler Interface
+     * @var      bool    Defines if a Handler running into an Exception (for whatever reason) should be autoremoved from the Handlers.
      * @param    LogInfo $logInfo
      */
     public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null, $autoRemove = false)
@@ -38,10 +39,16 @@ class Logger extends \Psr\Log\AbstractLogger
         }
     }
 
-    public function setAutoRemove($autoRemove = false) {
+    public function setAutoRemove($autoRemove)
+    {
         $this->autoRemove = (bool) $autoRemove;
 
         return $this;
+    }
+
+    public function getAutoRemove()
+    {
+        return $this->autoRemove;
     }
 
     /**

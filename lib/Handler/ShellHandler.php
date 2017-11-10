@@ -54,7 +54,6 @@ class ShellHandler extends AbstractHandler
     /**
      * Outputs the data in a verbose manner to the Shell
      *
-     * @param string $fullMessage the Full Message
      * @param array  $context     the Context for the Log
      */
     public function outputVerbose($context)

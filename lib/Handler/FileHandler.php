@@ -70,8 +70,12 @@ class FileHandler extends AbstractHandler
      */
     public function writeToFile($line)
     {
-        if (file_put_contents($this->filename, $line, FILE_APPEND | LOCK_EX) === false) {
+        $res = file_put_contents($this->filename, $line, FILE_APPEND | LOCK_EX);
+
+        if ($res === false) {
             throw new HandlerException('Cannot write to file: ' . $this->filename);
         }
+
+        return true;
     }
 }

@@ -14,26 +14,37 @@ class Logger extends \Psr\Log\AbstractLogger
 {
     private $handlers = array();
     protected $logInfo = null;
+    protected $autoRemove = false;
 
     /**
      * Initialise a new Logger with specific Handlers.
-     * If no Handler is defined a default one will be initialized (Handler\GelfHandler)
      *
-     * @param    array   $handlers Key/Value array where the Key is the Handler name and the object is an initialized Handler Interface
-     * and the object is an initialized Handler Interface
-     * @property string Handler name
-     * @var      Handler\HandlerInterface Handler Interface
-     * @param    LogInfo $logInfo
+     * @param HandlerInterface[] $handlers Key/Value array where the Key is the Handler name and the object is an initialized Handler Interface
+     * @param Info\InfoInterface $logInfo LogInfo object containing additional data
+     * @param bool $autoremove Defines if a Handler running into an Exception (for whatever reason) should be autoremoved from the Handlers.
      */
-    public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null)
+    public function __construct(array $handlers = array(), Info\InfoInterface $logInfo = null, $autoRemove = false)
     {
         $this->logInfo = (isset($logInfo)) ? $logInfo : new Info\GenericInfo();
+        $this->autoRemove = $autoRemove;
 
         foreach ($handlers as $handlerName => $handlerObject) {
             $handlerObject->setLogger($this);
             $handlerObject->init();
             $this->addHandler($handlerName, $handlerObject);
         }
+    }
+
+    public function setAutoRemove($autoRemove)
+    {
+        $this->autoRemove = (bool) $autoRemove;
+
+        return $this;
+    }
+
+    public function getAutoRemove()
+    {
+        return $this->autoRemove;
     }
 
     /**
@@ -143,8 +154,17 @@ class Logger extends \Psr\Log\AbstractLogger
         if (!defined('Productsup\Flexilog\Log\LogLevel::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level "%s" does not exist.', $level));
         }
-        foreach ($this->handlers as $handler) {
-            $handler->process($level, (string) $message, $context, $muted);
+
+        foreach ($this->handlers as $name => $handler) {
+            try {
+                $handler->process($level, (string) $message, $context, $muted);
+            } catch (Exception\HandlerException $e) {
+                if ($this->autoRemove) {
+                    $this->removeHandler($name);
+                } else {
+                    throw new Exception\HandlerException('A Handler caused an exception, initialise Flexilog with Autoremove to unset this Handler automatically.', 0, $e);
+                }
+            }
         }
     }
 

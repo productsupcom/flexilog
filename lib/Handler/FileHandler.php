@@ -2,6 +2,8 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Exception\HandlerException;
+
 /**
  * Write to a specified File
  */
@@ -17,12 +19,12 @@ class FileHandler extends AbstractHandler
     public function __construct($minimalLevel, $verbose, $additionalParameters = array())
     {
         if (!isset($additionalParameters['filename'])) {
-            throw new \Exception('Filename parameter must be set');
+            throw new HandlerException('Filename parameter must be set');
         }
         $filename = $additionalParameters['filename'];
         parent::__construct($minimalLevel, $verbose);
         if ((!file_exists($filename) && $this->writeToFile('')) || !is_writable($filename)) {
-            throw new \Exception('No write permission on file:'.$filename);
+            throw new HandlerException('No write permission on file:'.$filename);
         }
         $this->filename = $filename;
     }
@@ -69,7 +71,7 @@ class FileHandler extends AbstractHandler
     public function writeToFile($line)
     {
         if (file_put_contents($this->filename, $line, FILE_APPEND | LOCK_EX) === false) {
-            throw new \Exception('Cannot write to file: '.$this->handle);
+            throw new HandlerException('Cannot write to file: '.$this->handle);
         }
     }
 }

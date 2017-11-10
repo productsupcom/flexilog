@@ -7,7 +7,7 @@ namespace Productsup\Flexilog\Handler;
  */
 class FileHandler extends AbstractHandler
 {
-    private $handle = null;
+    protected $filename = null;
 
     /**
      * {@inheritDoc}
@@ -21,13 +21,10 @@ class FileHandler extends AbstractHandler
         }
         $filename = $additionalParameters['filename'];
         parent::__construct($minimalLevel, $verbose);
-        if ((!file_exists($filename) && file_put_contents($filename, '') === false) ||!is_writable($filename)) {
+        if ((!file_exists($filename) && file_put_contents($filename, '') === false) || !is_writable($filename)) {
             throw new \Exception('No write permission on file:'.$filename);
         }
-        $this->handle = fopen($filename, 'a');
-        if (!$this->handle) {
-            throw new \Exception('Cannot open file:'.$filename);
-        }
+        $this->filename = $filename;
     }
 
     /**
@@ -71,7 +68,7 @@ class FileHandler extends AbstractHandler
      */
     public function writeToFile($line)
     {
-        if (fwrite($this->handle, $line) === false) {
+        if (file_put_contents($this->filename, $line, FILE_APPEND | LOCK_EX) === false) {
             throw new \Exception('Cannot write to file: '.$this->handle);
         }
     }

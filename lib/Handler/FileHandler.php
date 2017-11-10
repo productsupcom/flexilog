@@ -23,7 +23,7 @@ class FileHandler extends AbstractHandler
         }
         $filename = $additionalParameters['filename'];
         parent::__construct($minimalLevel, $verbose);
-        if ((!file_exists($filename) && $this->writeToFile('')) || !is_writable($filename)) {
+        if ((!file_exists($filename) && !$this->writeToFile('')) || !is_writable($filename)) {
             throw new HandlerException('No write permission on file:'.$filename);
         }
         $this->filename = $filename;

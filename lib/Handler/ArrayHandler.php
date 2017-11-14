@@ -30,7 +30,6 @@ class ArrayHandler extends AbstractHandler
             'timestamp' => $timestamp,
         ];
 
-
         if ($this->verbose >= 1) {
             unset($context['loglevel']);
             $arr['variables'] = $context;

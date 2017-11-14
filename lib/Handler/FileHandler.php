@@ -35,13 +35,13 @@ class FileHandler extends AbstractHandler
      */
     public function write($level, $message, array $context = array())
     {
-        $line = sprintf('%s %s: %s'.PHP_EOL, date('H:i:s'), strtoupper($level), $message);
+        $line = sprintf('%s %s: %s%s', date('H:i:s'), strtoupper($level), $message, PHP_EOL);
         $this->writeToFile($line);
 
         if ($this->verbose >= 1) {
             $this->writeToFile("Extra Variables:".PHP_EOL);
             foreach ($context as $contextKey => $contextObject) {
-                $this->writeToFile(sprintf("\t%s: %s".PHP_EOL, $contextKey, $contextObject));
+                $this->writeToFile(sprintf("\t%s: %s%s", $contextKey, $contextObject, PHP_EOL));
             }
         }
     }

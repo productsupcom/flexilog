@@ -139,7 +139,6 @@ abstract class AbstractHandler implements HandlerInterface
      *
      * @return array {
      *      @var    $message
-     *      @var    $splitFullMessage
      *      @var    $context
      * }
      */
@@ -153,36 +152,6 @@ abstract class AbstractHandler implements HandlerInterface
         $message = $this->interpolate($message, $context);
 
         return array($message, $context);
-    }
-
-    /**
-     * Split the Full Message into chunks before writing it to the Logger
-     *
-     * @param string  $fullMessage
-     * @param integer $size        Defaults to 220000bytes
-     *
-     * @return array $splitFullMessage
-     */
-    public function splitMessage($fullMessage, $size = 220000)
-    {
-        $splitFullMessage = array(null);
-        if (isset($fullMessage)) {
-            if (is_array($fullMessage)) {
-                $fullMessage = print_r($fullMessage, true);
-            }
-
-            /* Because of the limit set by the GELF spec on the amount of chunks available
-             * we have to make sure we don't send a message that exceed the amount of chunks (256)
-             * times the chunk size (1420).
-             * This would mean 363520bytes for a message, a whopping 355KB.
-             * Some message are bigger, we split it on 220000bytes, which is a lot smaller then
-             * the max size, however if we make it bigger it doesn't seem to send at all.
-             * Maybe you just shouldn't try to publish a book via Gelf? ;)
-             */
-            $splitFullMessage = str_split($fullMessage, $size);
-        }
-
-        return $splitFullMessage;
     }
 
     /**

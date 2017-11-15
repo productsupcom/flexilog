@@ -2,6 +2,7 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Processor\ProcessorInterface;
 use League;
 
 /**
@@ -14,9 +15,12 @@ class ShellHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function __construct($minimalLevel = 'debug', $verbose = 0)
+    public function __construct($minimalLevel = 'debug',
+                                $verbose = 0,
+                                array $additionalParameters = array(),
+                                ProcessorInterface $processor = null)
     {
-        parent::__construct($minimalLevel, $verbose);
+        parent::__construct($minimalLevel, $verbose, $additionalParameters, $processor);
         $this->CLImate = new League\CLImate\CLImate();
         $this->CLImate->output->defaultTo('error');
     }

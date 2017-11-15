@@ -2,6 +2,8 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Processor\ProcessorInterface;
+
 /**
  * Write to a specified File
  */
@@ -14,13 +16,16 @@ class FileHandler extends AbstractHandler
      *
      * @param array $additionalParameters Pass an array with the `filename` as a key/value to be used.
      */
-    public function __construct($minimalLevel, $verbose, $additionalParameters = array())
+    public function __construct($minimalLevel = 'debug',
+                                $verbose = 0,
+                                array $additionalParameters = array(),
+                                ProcessorInterface $processor = null)
     {
         if (!isset($additionalParameters['filename'])) {
             throw new \Exception('Filename parameter must be set');
         }
         $filename = $additionalParameters['filename'];
-        parent::__construct($minimalLevel, $verbose);
+        parent::__construct($minimalLevel, $verbose, $additionalParameters, $processor);
         if ((!file_exists($filename) && file_put_contents($filename, '') === false) ||!is_writable($filename)) {
             throw new \Exception('No write permission on file:'.$filename);
         }
@@ -35,13 +40,12 @@ class FileHandler extends AbstractHandler
      */
     public function write($level, $message, array $context = array())
     {
-        $line = sprintf('%s %s: %s%s', date('H:i:s'), strtoupper($level), $message, PHP_EOL);
-        $this->writeToFile($line);
+        $this->writeToFile($this->processor->decorateMessage($level, $message, $context));
 
         if ($this->verbose >= 1) {
-            $this->writeToFile("Extra Variables:".PHP_EOL);
+            $this->writeToFile($this->processor->contextSeparator());
             foreach ($context as $contextKey => $contextObject) {
-                $this->writeToFile(sprintf("\t%s: %s%s", $contextKey, $contextObject, PHP_EOL));
+                $this->writeToFile($this->processor->decorateContext($level, $contextKey, $contextObject));
             }
         }
     }

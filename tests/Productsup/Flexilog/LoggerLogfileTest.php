@@ -4,14 +4,14 @@ use Productsup\Flexilog\Logger;
 use Productsup\Flexilog\LogInfo;
 use Productsup\Flexilog\Handler;
 
-class LoggerFileTest extends \Psr\Log\Test\LoggerInterfaceTest
+class LoggerLogfileTest extends \Psr\Log\Test\LoggerInterfaceTest
 {
     private $handler = null;
 
     function getLogger()
     {
         $logger = new Logger(array('Test' =>
-            $handler = new Handler\FileHandler('trace', 2, ['filename' => 'FileHandler_test.log']),
+            $handler = new Handler\LogfileHandler('trace', 2, ['filename' => 'LogfileHandler_test.log']),
         ));
         $this->handler = $handler;
         return $logger;

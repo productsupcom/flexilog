@@ -2,12 +2,15 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Processor\ProcessorInterface;
+
 /**
  * Abstract Handler to simplify the implementation of a Handler Interface
  */
 abstract class AbstractHandler implements HandlerInterface
 {
     protected $logger = null;
+    protected $processor = null;
     public $verbose = 0;
     public $minLevel = 7;
     const LOG_LEVELS = array(
@@ -30,9 +33,20 @@ abstract class AbstractHandler implements HandlerInterface
      *
      * @param string  $minimalLevel the minimal severity of the LogLevel to start logging with
      * @param integer $verbose      the Verbosity of the Log
+     * @param array   $additionalParameters optional additional parameters required for the Handler
+     * @param \Productsup\Flexilog\Processor $processor the Processor to be used for the Handler, if none supplied
+     *                              the DefaultProcessor one will be used.
      */
-    public function __construct($minimalLevel = 'debug', $verbose = 0)
+    public function __construct($minimalLevel = 'debug',
+                                $verbose = 0,
+                                array $additionalParameters = array(),
+                                ProcessorInterface $processor = null)
     {
+        if (is_null($processor)) {
+            $this->processor = new \Productsup\Flexilog\Processor\DefaultProcessor();
+        } else {
+            $this->processor = $processor;
+        }
         $this->verbose = $verbose;
         if (array_key_exists($minimalLevel, self::LOG_LEVELS)) {
             $this->minLevel = self::LOG_LEVELS[$minimalLevel];
@@ -44,6 +58,18 @@ abstract class AbstractHandler implements HandlerInterface
      */
     public function init()
     {
+    }
+
+    public function setProcessor(\Productsup\Flexilog\Processor $processor)
+    {
+        $this->processor = $processor;
+
+        return $this;
+    }
+
+    public function getProcessor()
+    {
+        return $this->processor;
     }
 
     /**
@@ -58,76 +84,6 @@ abstract class AbstractHandler implements HandlerInterface
         $this->logger = $logger;
 
         return $this;
-    }
-
-    /**
-     * Interpolates context values into the message placeholders.
-     *
-     * @param string $message Message to Log with Placeholders, defined by {curly}-braces.
-     * @param array  $context Key/Value array with properties for the Placeholders.
-     *
-     * @return string $message Message with Placeholders replaced by the context.
-     */
-    public function interpolate($message, array $context = array())
-    {
-        // build a replacement array with braces around the context keys
-        $replace = array();
-        foreach ($context as $key => $val) {
-            if (is_numeric($val)) {
-                $val = (string) $val;
-            }
-            if (is_string($val)) {
-                $replace['{'.$key.'}'] = $val;
-            }
-        }
-
-        // interpolate replacement values into the message and return
-        return strtr($message, $replace);
-    }
-
-    /**
-     * Prepare the Context before interpolation
-     * Turns Objects into String representations.
-     *
-     * @param array $context Key/Value array with properties for the Placeholders.
-     *
-     * @return array $conext Cleaned context
-     */
-    public function prepareContext(array $context)
-    {
-        // cleanup any thrown exceptions
-        foreach ($context as $contextKey => $contextObject) {
-            // some reserved keywords
-            $reserved = array('date');
-            if (in_array($contextKey, $reserved)) {
-                // prepend with an underscore
-                $newkey = '_'.$contextKey;
-                $context[$newkey] = $context[$contextKey];
-                unset($context[$contextKey]);
-                $contextKey = $newkey;
-            }
-
-            if ($contextObject instanceof \Exception) {
-                $contextObject = $contextObject->__toString();
-            } elseif (is_array($contextObject)) {
-                $contextObject = json_encode($contextObject, true);
-            } elseif ($contextObject instanceof \DateTime) {
-                $contextObject = $contextObject->format(\DateTime::RFC3339);
-            } elseif (is_object($contextObject)) {
-                $contextObject = $contextObject->__toString();
-            } elseif (is_resource($contextObject)) {
-                $contextObject = get_resource_type($contextObject);
-            }
-
-            $context[$contextKey] = $contextObject;
-
-            // clean empty values
-            if (empty($contextObject) && (string) $contextObject !== '0') {
-                unset($context[$contextKey]);
-            }
-        }
-
-        return $context;
     }
 
     /**
@@ -148,8 +104,8 @@ abstract class AbstractHandler implements HandlerInterface
         $logInfo->validate();
         $context = array_merge($context, $logInfo->getData());
         $context['loglevel'] = $level;
-        $context = $this->prepareContext($context);
-        $message = $this->interpolate($message, $context);
+        $context = $this->processor->prepareContext($context);
+        $message = $this->processor->interpolate($message, $context);
 
         return array($message, $context);
     }

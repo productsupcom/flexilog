@@ -12,14 +12,6 @@ class ArrayHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function __construct($minimalLevel = 'debug', $verbose = 0)
-    {
-        parent::__construct($minimalLevel, $verbose);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function write($level, $message, array $context = array())
     {
         $now = \DateTime::createFromFormat('U.u', microtime(true));

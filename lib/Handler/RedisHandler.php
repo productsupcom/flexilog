@@ -2,6 +2,7 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Processor\ProcessorInterface;
 use Productsup\Flexilog\Exception\HandlerException;
 use Productsup\Flexilog\Exception\HandlerConnectionException;
 use Redis;
@@ -18,7 +19,10 @@ class RedisHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function __construct($minimalLevel, $verbose, $additionalParameters = array())
+    public function __construct($minimalLevel = 'debug',
+                                $verbose = 0,
+                                array $additionalParameters = array(),
+                                ProcessorInterface $processor = null)
     {
         if (!class_exists('Redis')) {
             throw new HandlerException('Class Redis is not found');
@@ -35,7 +39,7 @@ class RedisHandler extends AbstractHandler
         }
         $this->redis = new Redis();
         $this->redisConfig = $redisConfig;
-        parent::__construct($minimalLevel, $verbose);
+        parent::__construct($minimalLevel, $verbose, $additionalParameters, $processor);
     }
 
     /**

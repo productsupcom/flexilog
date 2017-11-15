@@ -2,6 +2,7 @@
 
 namespace Productsup\Flexilog\Handler;
 
+use Productsup\Flexilog\Processor\ProcessorInterface;
 use Productsup\Flexilog\Exception\HandlerException;
 use Productsup\Flexilog\Exception\HandlerConnectionException;
 use Gelf;
@@ -19,13 +20,16 @@ class GelfHandler extends AbstractHandler
      *
      * @param $additionalParameters array Pass the `server` and `port` as a key/value array
      */
-    public function __construct($minimalLevel, $verbose, $additionalParameters = array())
+    public function __construct($minimalLevel = 'debug',
+                                $verbose = 0,
+                                array $additionalParameters = array(),
+                                ProcessorInterface $processor = null)
     {
         if (!isset($additionalParameters['server'])) {
             throw new HandlerException('Server parameter must be set inside the $additionalParameters');
         }
         $port = isset($additionalParameters['port']) ? $additionalParameters['port'] : Gelf\Transport\UdpTransport::DEFAULT_PORT;
-        parent::__construct($minimalLevel, $verbose);
+        parent::__construct($minimalLevel, $verbose, $additionalParameters, $processor);
         $this->transport = new Gelf\Transport\UdpTransport(
             $additionalParameters['server'],
             $port,
@@ -79,8 +83,8 @@ class GelfHandler extends AbstractHandler
         if (isset($context['fullMessage'])) {
             $fullMessage = $context['fullMessage'];
             unset($context['fullMessage']);
-            $fullMessage = $this->interpolate($fullMessage, $this->logger->getLogInfo()->getData());
-            $fullMessage = $this->interpolate($fullMessage, $context);
+            $fullMessage = $this->processor->interpolate($fullMessage, $this->logger->getLogInfo()->getData());
+            $fullMessage = $this->processor->interpolate($fullMessage, $context);
             $splitFullMessage = $this->splitMessage($fullMessage);
         }
 

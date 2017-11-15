@@ -55,27 +55,17 @@ class SymfonyConsoleHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array())
+    public function write($level, $message, array $context = array())
     {
-        $i = 1;
-        foreach ($splitFullMessage as $fullMessage) {
-            $shortMessageToSend = $message;
-            if (count($splitFullMessage) != 1) {
-                $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
-            }
-
-            if ($this->outputInterface->getVerbosity() >= $this->verbosityLevelMap[$level]) {
-                $this->getOutputInterface($level)->writeln(
-                    sprintf(
-                        '<%1$s>[%2$s] %3$s</%1$s>',
-                        $this->formatLevelMap[$level],
-                        $level,
-                        $this->interpolate($shortMessageToSend, $context)
-                    )
-                );
-            }
-
-            $i++;
+        if ($this->outputInterface->getVerbosity() >= $this->verbosityLevelMap[$level]) {
+            $this->getOutputInterface($level)->writeln(
+                sprintf(
+                    '<%1$s>[%2$s] %3$s</%1$s>',
+                    $this->formatLevelMap[$level],
+                    $level,
+                    $message
+                )
+            );
         }
     }
 

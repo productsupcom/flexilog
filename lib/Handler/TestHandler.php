@@ -12,7 +12,7 @@ class TestHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array())
+    public function write($level, $message, array $context = array())
     {
         // noop;
         // taken care of in the process() in the Abstract

@@ -24,65 +24,45 @@ class ShellHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array())
+    public function write($level, $message, array $context = array())
     {
-        $i = 1;
-        foreach ($splitFullMessage as $fullMessage) {
-            $shortMessageToSend = $message;
-            if (count($splitFullMessage) != 1) {
-                $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
-            }
-
+        $color = 'dark_gray';
+        if (self::LOG_LEVELS[$level] >= 7) {
             $color = 'dark_gray';
-            if (self::LOG_LEVELS[$level] >= 7) {
-                $color = 'dark_gray';
-            } elseif (self::LOG_LEVELS[$level] >= 5) {
-                $color = 'green';
-            } elseif (self::LOG_LEVELS[$level] == 4) {
-                $color = 'yellow';
-            } elseif (self::LOG_LEVELS[$level] == 3) {
-                $color = 'light_red';
-            } elseif (self::LOG_LEVELS[$level] <= 2) {
-                $color = 'red';
-            }
+        } elseif (self::LOG_LEVELS[$level] >= 5) {
+            $color = 'green';
+        } elseif (self::LOG_LEVELS[$level] == 4) {
+            $color = 'yellow';
+        } elseif (self::LOG_LEVELS[$level] == 3) {
+            $color = 'light_red';
+        } elseif (self::LOG_LEVELS[$level] <= 2) {
+            $color = 'red';
+        }
 
-            $levelOut = $this->CLImate->bold();
-            if (self::LOG_LEVELS[$level] <= 2) {
-                $levelOut = $levelOut->blink();
-            }
-            $levelOut->inline(sprintf('%s <%s>%s</%s>: ', date('H:i:s'), $color, strtoupper($level), $color));
-            $this->CLImate->out($shortMessageToSend);
+        $levelOut = $this->CLImate->bold();
+        if (self::LOG_LEVELS[$level] <= 2) {
+            $levelOut = $levelOut->blink();
+        }
+        $levelOut->inline(sprintf('%s <%s>%s</%s>: ', date('H:i:s'), $color, strtoupper($level), $color));
+        $this->CLImate->out($message);
 
-            if ($this->verbose >= 1) {
-                $this->outputVerbose($fullMessage, $context);
-            }
-
-            $i++;
+        if ($this->verbose >= 1) {
+            $this->outputVerbose($context);
         }
     }
 
     /**
      * Outputs the data in a verbose manner to the Shell
      *
-     * @param string $fullMessage the Full Message
      * @param array  $context     the Context for the Log
      */
-    public function outputVerbose($fullMessage, $context)
+    public function outputVerbose($context)
     {
         $color = 'cyan';
-        if (!empty($fullMessage)) {
-            $this->CLImate->inline(sprintf('<%s>%s</%s>: ', $color, 'Full Message', $color));
-            $this->CLImate->out($fullMessage);
-        }
-        if ($this->verbose >= 2) {
-            $this->CLImate->out(sprintf('<%s>%s</%s>: ', $color, 'Extra Variables', $color));
-            foreach ($context as $contextKey => $contextObject) {
-                $this->CLImate->tab()->inline(sprintf('<%s>%s</%s>: ', $color, $contextKey, $color));
-                $this->CLImate->out($contextObject);
-            }
-        }
-        if (!empty($fullMessage) || $this->verbose >= 2) {
-            $this->CLImate->br();
+        $this->CLImate->out(sprintf('<%s>%s</%s>: ', $color, 'Extra Variables', $color));
+        foreach ($context as $contextKey => $contextObject) {
+            $this->CLImate->tab()->inline(sprintf('<%s>%s</%s>: ', $color, $contextKey, $color));
+            $this->CLImate->out($contextObject);
         }
     }
 }

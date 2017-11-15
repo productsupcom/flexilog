@@ -33,34 +33,16 @@ class FileHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function write($level, $message, array $splitFullMessage, array $context = array())
+    public function write($level, $message, array $context = array())
     {
-        $i = 1;
-        foreach ($splitFullMessage as $fullMessage) {
-            $shortMessageToSend = $message;
-            if (count($splitFullMessage) != 1) {
-                $shortMessageToSend = $i.'/'.count($splitFullMessage).' '.$message;
+        $line = sprintf('%s %s: %s%s', date('H:i:s'), strtoupper($level), $message, PHP_EOL);
+        $this->writeToFile($line);
+
+        if ($this->verbose >= 1) {
+            $this->writeToFile("Extra Variables:".PHP_EOL);
+            foreach ($context as $contextKey => $contextObject) {
+                $this->writeToFile(sprintf("\t%s: %s%s", $contextKey, $contextObject, PHP_EOL));
             }
-
-            $line = sprintf('%s %s: %s'.PHP_EOL, date('H:i:s'), strtoupper($level), $shortMessageToSend);
-            $this->writeToFile($line);
-
-            if ($this->verbose >= 1) {
-                if (!empty($fullMessage)) {
-                    $this->writeToFile(sprintf("Full Message:".PHP_EOL."\t%s", $fullMessage));
-                }
-                if ($this->verbose >= 2) {
-                    $this->writeToFile("Extra Variables:".PHP_EOL);
-                    foreach ($context as $contextKey => $contextObject) {
-                        $this->writeToFile(sprintf("\t%s: %s".PHP_EOL, $contextKey, $contextObject));
-                    }
-                }
-                if (!empty($fullMessage) || $this->verbose >= 2) {
-                    $this->writeToFile(PHP_EOL);
-                }
-            }
-
-            $i++;
         }
     }
 

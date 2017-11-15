@@ -151,17 +151,8 @@ abstract class AbstractHandler implements HandlerInterface
         $context['loglevel'] = $level;
         $context = $this->prepareContext($context);
         $message = $this->interpolate($message, $context);
-        $splitFullMessage = array(null);
 
-        if (isset($context['fullMessage'])) {
-            $fullMessage = $context['fullMessage'];
-            unset($context['fullMessage']);
-            $fullMessage = $this->interpolate($fullMessage, $this->logger->getLogInfo()->getData());
-            $fullMessage = $this->interpolate($fullMessage, $context);
-            $splitFullMessage = $this->splitMessage($fullMessage);
-        }
-
-        return array($message, $splitFullMessage, $context);
+        return array($message, $context);
     }
 
     /**
@@ -211,10 +202,10 @@ abstract class AbstractHandler implements HandlerInterface
             return;
         }
         if (self::LOG_LEVELS[$level] <= $this->minLevel) {
-            list($message, $splitFullMessage, $context) = $this->prepare($level, $message, $context);
+            list($message, $context) = $this->prepare($level, $message, $context);
             $this->logs[] = sprintf('%s %s', $level, $message);
 
-            $this->write($level, $message, $splitFullMessage, $context);
+            $this->write($level, $message, $context);
         }
     }
 }
